@@ -44,21 +44,11 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/wechat_gzh/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
+            <state relative-caret-position="281">
               <caret line="43" column="21" selection-start-line="43" selection-start-column="21" selection-end-line="43" selection-end-column="21" />
               <folding>
                 <element signature="e#0#71#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -76,18 +66,32 @@
       <file leaf-file-name="wechat_spider02.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/wechat_gzh/wechat_spider02.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="12" selection-start-line="0" selection-start-column="0" selection-end-line="14" selection-end-column="42" />
-              <folding />
+            <state relative-caret-position="326">
+              <caret line="280" column="10" selection-start-line="273" selection-start-column="0" selection-end-line="280" selection-end-column="10" />
+              <folding>
+                <element signature="e#50#85#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="add_gzh.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="add_gzh.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/wechat_gzh/add_gzh.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+            <state relative-caret-position="191">
+              <caret line="257" column="39" selection-start-line="257" selection-start-column="39" selection-end-line="257" selection-end-column="39" />
+              <folding>
+                <element signature="e#50#85#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="spider_running.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/wechat_gzh/spider_running.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="251">
+              <caret line="279" column="10" selection-start-line="279" selection-start-column="10" selection-end-line="279" selection-end-column="10" />
               <folding>
                 <element signature="e#50#85#0" expanded="true" />
               </folding>
@@ -152,8 +156,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -184,6 +188,7 @@
         <option value="$PROJECT_DIR$/wechat_gzh/views.py" />
         <option value="$PROJECT_DIR$/wechat_gzh/wechat_spider02.py" />
         <option value="$PROJECT_DIR$/wechat_gzh/add_gzh.py" />
+        <option value="$PROJECT_DIR$/wechat_gzh/spider_running.py" />
       </list>
     </option>
   </component>
@@ -824,13 +829,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/wechat_gzh/migrations/0001_initial.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="19" column="25" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/manage.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1151,9 +1149,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/wechat_gzh/add_gzh.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="257" column="39" selection-start-line="257" selection-start-column="39" selection-end-line="257" selection-end-column="39" />
+          <folding>
+            <element signature="e#50#85#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/wechat_gzh/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
+        <state relative-caret-position="281">
           <caret line="43" column="21" selection-start-line="43" selection-start-column="21" selection-end-line="43" selection-end-column="21" />
           <folding>
             <element signature="e#0#71#0" expanded="true" />
@@ -1163,16 +1171,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/wechat_gzh/wechat_spider02.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="12" selection-start-line="0" selection-start-column="0" selection-end-line="14" selection-end-column="42" />
-          <folding />
+        <state relative-caret-position="326">
+          <caret line="280" column="10" selection-start-line="273" selection-start-column="0" selection-end-line="280" selection-end-column="10" />
+          <folding>
+            <element signature="e#50#85#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wechat_gzh/add_gzh.py">
+    <entry file="file://$PROJECT_DIR$/wechat_gzh/spider_running.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+        <state relative-caret-position="251">
+          <caret line="279" column="10" selection-start-line="279" selection-start-column="10" selection-end-line="279" selection-end-column="10" />
           <folding>
             <element signature="e#50#85#0" expanded="true" />
           </folding>
