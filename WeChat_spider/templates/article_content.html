@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}content{% endblock %}
+
+{% block body_block %}
+<ul>
+<div class="container">
+<div class="row">
+<div class="col-md-6">
+    {% for content in contents %}
+        <p>{{ content.content}}</p>
+        </div>
+        </div>
+</div>
+    {% endfor %}
+
+</ul>
+{% endblock %}

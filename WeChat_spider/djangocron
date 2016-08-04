@@ -1,0 +1,1 @@
+0 6,12,18 * * 1-5 /usr/local/bin/python3 /Users/io/PycharmProjects/WeChat_spider/manage.py mycommand > /Users/io/PycharmProjects/WeChat_spider/djangocron.log 2>&1

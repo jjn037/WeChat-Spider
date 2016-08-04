@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}文章列表{% endblock %}
+
+{% block body_block %}
+<ul>
+    {% for article in new_articles %}
+
+        <li><a href=/article/content/{{article.id }}>{{ article.title }}</a></li>
+        <li>publish data:{{ article.publish_date }}</li>
+
+
+    {% endfor %}
+</ul>
+{% endblock %}
