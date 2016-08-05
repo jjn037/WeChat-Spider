@@ -1,4 +1,4 @@
-/Users/io/PycharmProjects/WeChat_spider/WeChat_spider/urls.py:32: RemovedInDjango110Warning: Support for string view arguments to url() is deprecated and will be removed in Django 1.10 (got django.views.static.serve). Pass the callable instead.
+/Users/io/PycharmProjects/WeChat_spider/WeChat_spider/urls.py:33: RemovedInDjango110Warning: Support for string view arguments to url() is deprecated and will be removed in Django 1.10 (got django.views.static.serve). Pass the callable instead.
   {'document_root': os.path.join( settings.STATIC_PATH, 'images')}),
 
 hello

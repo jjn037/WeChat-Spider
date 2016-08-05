@@ -20,27 +20,27 @@ i =0
 
 
 
-for k in range(1000):
+for k in range(10000):
+    # try:
+    #     i = i + 1
+    #     gzhs = GZH.objects.all()[i]
+    #     print(gzhs.weixin_id)
+    # except:
+    #     break
+    # gzh_id = gzhs.weixin_id
     try:
-        i = i + 1
-        gzhs = GZH.objects.all()[i]
-        print(gzhs.weixin_id)
-    except:
-        break
-    gzh_id = gzhs.weixin_id
-    try:
-        article = Article.objects.filter(gzh__weixin_id__exact=gzh_id)[0]
+        article = Article.objects.all()[k]
         print(article.title)
         today = time.strftime('%Y-%m-%d')
         print('today='+today)
         if article.publish_date != today:
-            gzh_updated = article.gzh.weixin_id
-            print('update='+gzh_updated)
+            # gzh_updated = article.gzh.weixin_id
+            # print('update='+gzh_updated)
             _gzhs.append(article)
 
     except:
-        gzh_dict = {}
+        pass
 
 for gzh in _gzhs:
-    print('id='+gzh.gzh.weixin_id)
+    print('title='+gzh.title)
 print("ok")

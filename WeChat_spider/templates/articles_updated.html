@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}更新文章列表{% endblock %}
+
+{% block body_block %}
+        <ul >
+        {% for article in articles %}
+
+{#            <li><a href=/article/{{ gzh.gzh.weixin_id }}>公众号:{{ gzh.gzh.name }}</a></li>#}
+
+            <li><a href=/article/new/{{ article.gzh.wenxin_id }}>{{ article.title }}</a></li>
+        {% endfor %}
+        </ul>
+
+
+{% endblock %}
