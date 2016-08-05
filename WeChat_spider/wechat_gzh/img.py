@@ -13,24 +13,34 @@ django.setup()
 
 from wechat_gzh.models import GZH, Article
 
-for i in range(10):
+_gzhs = []
+gzh_dict = {}
 
-    article_list = Article.objects.filter(gzh__weixin_id__exact='changchundiaoyu')[i]
-    today = time.strftime('%Y-%m-%d')
-    if article_list.publish_date == today:
-# for a in article_list.publish_date:
-#     print(a)
+i =0
 
 
-       print(article_list.title)
-    else:
-        print(today)
 
-#
-# aa = GZH.objects.all()
-# for a in aa:
-#     print(a.weixin_id)
-# bb = Article.objects.filter(gzh__weixin_id__exact='changchundiaoyu')
-# for b in bb:
-#     print(b.publish_date)
-#     print(b.title)
+for k in range(1000):
+    try:
+        i = i + 1
+        gzhs = GZH.objects.all()[i]
+        print(gzhs.weixin_id)
+    except:
+        break
+    gzh_id = gzhs.weixin_id
+    try:
+        article = Article.objects.filter(gzh__weixin_id__exact=gzh_id)[0]
+        print(article.title)
+        today = time.strftime('%Y-%m-%d')
+        print('today='+today)
+        if article.publish_date != today:
+            gzh_updated = article.gzh.weixin_id
+            print('update='+gzh_updated)
+            _gzhs.append(article)
+
+    except:
+        gzh_dict = {}
+
+for gzh in _gzhs:
+    print('id='+gzh.gzh.weixin_id)
+print("ok")

@@ -27,6 +27,7 @@ class Article(models.Model):
     video_url = models.URLField()
     create_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
+    change = models.BooleanField(default=False)
     # slug = models.SlugField()
     #
     # def save(self, *args, **kwargs):

@@ -61,9 +61,40 @@ def new_articles(request, gzh_id):
 
             if article_list.publish_date == today:
                 new_article.append(article_list)
+                gzh_updated = article_list.gzh.weixin_id
+                # today_articles_dic['gzh_updated']
                 today_articles_dic = {'new_articles': new_article}
     except:
         pass
     return render_to_response('today.html', today_articles_dic)
+
+
+def gzh_updated(request):
+    gzh_dict = {}
+    _gzhs = []
+    i = 0
+    for k in range(1000):
+        try:
+            i = i+1
+            gzhs = GZH.objects.all()[i]
+        except:
+            pass
+        gzh_id = gzhs.weixin_id
+        try:
+            article = Article.objects.filter(gzh__weixin_id__exact=gzh_id)[0]
+            print(article.title)
+            today = time.strftime('%Y-%m-%d')
+            print('today=' + today)
+            if article.publish_date == today:
+                gzh_updated = article.gzh.weixin_id
+                print('update=' + gzh_updated)
+                _gzhs.append(article)
+        except:
+            pass
+    gzh_dict['gzhs'] = _gzhs
+
+    return render_to_response('gzh_update.html', gzh_dict)
+
+
 
 
