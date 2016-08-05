@@ -5,9 +5,9 @@
         <ul >
         {% for article in articles %}
 
-{#            <li><a href=/article/{{ gzh.gzh.weixin_id }}>公众号:{{ gzh.gzh.name }}</a></li>#}
+{#            <li><a href=/article/{{ article.gzh.weixin_id }}>公众号:{{ article.gzh.name }}</a></li>#}
 
-            <li><a href=/article/new/{{ article.gzh.wenxin_id }}>{{ article.title }}</a></li>
+            <li><a href=/article/content/{{article.id }}>{{ article.title }}</a></li>
         {% endfor %}
         </ul>
 
