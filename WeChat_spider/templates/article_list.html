@@ -2,12 +2,27 @@
 {% block title %}文章列表{% endblock %}
 
 {% block body_block %}
+{#    <script src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>#}
 <ul>
-    {% for article in articles %}
-        <li><a href=/article/content/{{article.id }}>{{ article.title }}</a></li>
-        <li>publish date:{{ article.publish_date }}</li>
+    {% for item in date_articles %}
 
+            <li>date:{{ item.0 }}</li>
+        {% for article in item.1 %}
 
+        <li><a href=/article/content/{{ article.id }}>{{ article.title }}</a></li>
+{#       {% endfor %}#}
+        {% endfor %}
     {% endfor %}
+
+
 </ul>
+
+{##}
+{#<script type="text/javascript">#}
+{##}
+{#var date = {{  }}#}
+{##}
+{#document.getElementsByTags('a')[0].href#}
+{##}
+{#</script>#}
 {% endblock %}

@@ -7,40 +7,44 @@ from django.conf import settings
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'WeChat_spider.settings')
 
-import django, time
+import django, time, datetime
 
 django.setup()
 
 from wechat_gzh.models import GZH, Article
 
-_gzhs = []
-gzh_dict = {}
+articles = []
+article_dict = {}
+_list = []
+_dict = {}
 
-i =0
+day = ''
 
+today = time.strftime('%Y,%m,%d')
+a = datetime.datetime.now() + datetime.timedelta(-1)
 
+day = a.strftime('%Y-%m-%d')
+print(type(day))
 
-for k in range(10000):
-    # try:
-    #     i = i + 1
-    #     gzhs = GZH.objects.all()[i]
-    #     print(gzhs.weixin_id)
-    # except:
-    #     break
-    # gzh_id = gzhs.weixin_id
-    try:
-        article = Article.objects.all()[k]
-        print(article.title)
-        today = time.strftime('%Y-%m-%d')
-        print('today='+today)
-        if article.publish_date != today:
-            # gzh_updated = article.gzh.weixin_id
-            # print('update='+gzh_updated)
-            _gzhs.append(article)
+try:
+    article = Article.objects.all()[0]
 
-    except:
-        pass
+    if article.publish_date == day:
 
-for gzh in _gzhs:
-    print('title='+gzh.title)
-print("ok")
+        articles = []
+        for k in range(100):
+            article_list = Article.objects.filter(gzh__weixin_id__exact='ZHYL1666')[k]
+
+            if article_list.publish_date == day:
+
+                print('article ok')
+                article_dict.setdefault(day, []).append(article_list)
+except:
+    pass
+_list.append(article_dict)
+_dict = {'date': _list}
+for date in _dict['date']:
+    print(type(date))
+    for art in date[day]:
+        print(art.title)
+

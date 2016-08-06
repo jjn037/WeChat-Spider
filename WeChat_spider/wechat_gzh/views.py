@@ -3,7 +3,8 @@ from wechat_gzh.models import GZH, Article
 from wechat_gzh.forms import GZHForm
 from wechat_gzh.add_gzh import WXGZH
 from django.template import RequestContext
-import time
+import time, datetime
+import json
 
 
 def index(request):
@@ -13,13 +14,32 @@ def index(request):
     return render_to_response('index.html', gzh_dict)
 
 
+# def article(request, gzh_id):
+#     article_list = Article.objects.filter(gzh__weixin_id__exact=gzh_id)
+#
+#     article_dict = {'articles': article_list}
+#
+#     return render_to_response('article_list.html', article_dict)
 def article(request, gzh_id):
-    article_list = Article.objects.filter(gzh__weixin_id__exact=gzh_id)
-    # print('list')
-    article_dict = {'articles': article_list}
+    article_list = Article.objects.filter(gzh__weixin_id__exact=gzh_id)[0:]
+    grouped_articles = {}
+    for article in article_list:
+        articles = grouped_articles.get(article.publish_date) or []
+        articles.append(article)
+        grouped_articles[article.publish_date] = articles
 
-    return render_to_response('article_list.html', article_dict)
+    sorted_articles = sorted(grouped_articles.items(), reverse=True)
+    article_context = {'date_articles': sorted_articles}
 
+    return render_to_response('article_list.html', article_context)
+
+'''
+list = [
+    {'date': date_str1, 'articles': [article1, article2]},
+    {'date': date_str2, 'articles': articl_list},
+    {'date': date_str3, 'articles': articl_list}
+]
+'''
 
 def article_content(request, id):
     # content_dict = {}
@@ -50,11 +70,10 @@ def new_articles(request, gzh_id):
     today_articles_dic = {}
     new_article = []
     try:
-        for i in range(10):
-            article_list = Article.objects.filter(gzh__weixin_id__exact=gzh_id)[i]
-            today = time.strftime('%Y-%m-%d')
-
-            if article_list.publish_date == today:
+        article_list = Article.objects.filter(gzh__weixin_id__exact=gzh_id)[0:]
+        today = time.strftime('%Y-%m-%d')
+        for article in article_list:
+            if article.publish_date == today:
                 new_article.append(article_list)
                 gzh_updated = article_list.gzh.weixin_id
                 # today_articles_dic['gzh_updated']
@@ -67,13 +86,11 @@ def new_articles(request, gzh_id):
 def gzh_updated(request):
     gzh_dict = {}
     _gzhs = []
-    i = 0
-    for k in range(10000):
-        try:
-            i = i+1
-            gzhs = GZH.objects.all()[i]
-        except:
-            pass
+    try:
+        gzhs_list = GZH.objects.all()[0:]
+    except:
+        pass
+    for gzhs in gzhs_list:
         gzh_id = gzhs.weixin_id
         try:
             article = Article.objects.filter(gzh__weixin_id__exact=gzh_id)[0]
@@ -93,19 +110,20 @@ def gzh_updated(request):
 
 def articles_updated(request):
     _article = []
-    for i in range(10000):
-        try:
-            article = Article.objects.all()[i]
+
+    try:
+        article_list = Article.objects.all()[0:]
+        for article in article_list:
             print(article.title)
             today = time.strftime('%Y-%m-%d')
             print('today=' + today)
-            if article.publish_date != today:
+            if article.publish_date == today:
                 # gzh_updated = article.gzh.weixin_id
                 # print('update='+gzh_updated)
                 _article.append(article)
 
-        except:
-            pass
+    except:
+        pass
 
     article_updated_dict = {'articles': _article}
     return render_to_response('articles_updated.html', article_updated_dict)

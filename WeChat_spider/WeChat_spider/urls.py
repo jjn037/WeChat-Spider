@@ -30,6 +30,6 @@ urlpatterns = [
 
     url(r'', views.index, name='index'),
     url(r'^images/(?P<path>.*)', 'django.views.static.serve',
-        {'document_root': os.path.join( settings.STATIC_PATH, 'images')}),
+        {'document_root': os.path.join(settings.STATIC_PATH, 'images')}),
 
 ]
