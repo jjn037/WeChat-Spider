@@ -16,34 +16,29 @@
 {#        {% endfor %}#}
 {#        {% paginate %}#}
 {#        </ul>#}
+<table class="table">
+    <thead class="thead-inverse">
+        <tr>
+          <th>#</th>
 
-
-
-    <table class="table">
-  <thead class="thead-inverse">
-    <tr>
-      <th>#</th>
-
-      <th>公众号</th>
-      <th>微信号</th>
-      <th>功能介绍</th>
-        <th>微信认证</th>
-        <th>头像</th>
-    </tr>
-  </thead>
-        {% for gzh in gzhs %}
+          <th>公众号</th>
+          <th>微信号</th>
+          <th>功能介绍</th>
+            <th>微信认证</th>
+            <th>头像</th>
+        </tr>
+    </thead>
+  {% for gzh in gzhs %}
   <tbody>
     <tr>
       <th scope="row"></th>
-      <td><a href=/article/{{ gzh.weixin_id }}{{ gzh.name }}>{{ gzh.name }}</a></td>
+      <td><a href=/article/{{ gzh.weixin_id }}>{{ gzh.name }}</a></td>
       <td>{{ gzh.weixin_id }}</td>
       <td>{{ gzh.introduction }}</td>
-        <td>{{ gzh.verify_name }}</td>
-        <td><img src="static/images/{{ gzh.weixin_id }}.png"></td>
-
+      <td>{{ gzh.verify_name }}</td>
+      <td><img src="static/images/{{ gzh.weixin_id }}.png"></td>
     </tr>
-
   </tbody>
-{% endfor %}
+  {% endfor %}
 </table>
 {% endblock %}

@@ -3,26 +3,41 @@
 
 {% block body_block %}
 {#    <script src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>#}
-<ul>
-    {% for item in date_articles %}
-
-            <li>date:{{ item.0 }}</li>
-        {% for article in item.1 %}
-
-        <li><a href=/article/content/{{ article.id }}>{{ article.title }}</a></li>
+{#<ul>#}
+{#    {% for item in date_articles %}#}
+{##}
+{#            <li>date:{{ item.0 }}</li>#}
+{#        {% for article in item.1 %}#}
+{##}
+{#        <li><a href=/article/content/{{ article.id }}>{{ article.title }}</a></li>#}
 {#       {% endfor %}#}
-        {% endfor %}
-    {% endfor %}
+{#        {% endfor %}#}
+{#    {% endfor %}#}
+{##}
+{##}
+{#</ul>#}
 
+<table class="table">
+    <thead class="thead-inverse">
+        <tr>
+          <th>#</th>
 
-</ul>
+          <th>日期</th>
+          <th>title</th>
+    </thead>
+  {% for item in date_articles %}
 
-{##}
-{#<script type="text/javascript">#}
-{##}
-{#var date = {{  }}#}
-{##}
-{#document.getElementsByTags('a')[0].href#}
-{##}
-{#</script>#}
+  <tbody>
+    <tr>
+      <th scope="row"></th>
+      <td>{{ item.0 }}</td>
+        <td>
+            {% for article in item.1 %}
+            <li><a href=/article/content/{{ article.id }}>{{ article.title }}</a></li>
+            {% endfor %}
+        </td>
+    </tr>
+  </tbody>
+  {% endfor %}
+</table>
 {% endblock %}
