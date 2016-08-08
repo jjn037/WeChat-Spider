@@ -1,19 +1,49 @@
-
+{#{% load pagination_tags %}#}
 {% extends 'base.html' %}
 {% block title %}公众号列表{% endblock %}
 
 {% block body_block %}
-        <ul >
-        {% for gzh in gzhs %}
-
-            <li><a href=/article/{{ gzh.weixin_id }}>公众号:{{ gzh.name }}</a></li>
-            <li>微信号:{{ gzh.weixin_id }}</li>
-            <li>功能介绍:{{ gzh.introduction }}</li>
-            <li>微信认证:{{ gzh.verify_name }}</li>
-            <li><img src="static/images/{{ gzh.weixin_id }}.png"></li>
+{#    <ul xmlns="http://www.w3.org/1999/html">#}
+{#        {% autopaginate gzhs %}#}
+{#        {% for gzh in gzhs %}#}
+{##}
+{#            <li><a href=/article/{{ gzh.weixin_id }}>公众号:{{ gzh.name }}</a></li>#}
+{#            <li>微信号:{{ gzh.weixin_id }}</li>#}
+{#            <li>功能介绍:{{ gzh.introduction }}</li>#}
+{#            <li>微信认证:{{ gzh.verify_name }}</li>#}
+{#            <li><img src="static/images/{{ gzh.weixin_id }}.png"></li>#}
 {#            <li><a href=/article/new/{{ gzh.weixin_id }}>今日更新</a></li>#}
-        {% endfor %}
-        </ul>
+{#        {% endfor %}#}
+{#        {% paginate %}#}
+{#        </ul>#}
 
 
+
+    <table class="table">
+  <thead class="thead-inverse">
+    <tr>
+      <th>#</th>
+
+      <th>公众号</th>
+      <th>微信号</th>
+      <th>功能介绍</th>
+        <th>微信认证</th>
+        <th>头像</th>
+    </tr>
+  </thead>
+        {% for gzh in gzhs %}
+  <tbody>
+    <tr>
+      <th scope="row"></th>
+      <td><a href=/article/{{ gzh.weixin_id }}{{ gzh.name }}>{{ gzh.name }}</a></td>
+      <td>{{ gzh.weixin_id }}</td>
+      <td>{{ gzh.introduction }}</td>
+        <td>{{ gzh.verify_name }}</td>
+        <td><img src="static/images/{{ gzh.weixin_id }}.png"></td>
+
+    </tr>
+
+  </tbody>
+{% endfor %}
+</table>
 {% endblock %}
