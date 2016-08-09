@@ -17,3 +17,7 @@ urlpatterns = [
     #     {'document_root': os.path.join(settings.STATIC_PATH, 'images')}),
 
 ]
+
+
+
+

@@ -3,29 +3,16 @@
 {% block title %}公众号列表{% endblock %}
 
 {% block body_block %}
-{#    <ul xmlns="http://www.w3.org/1999/html">#}
-{#        {% autopaginate gzhs %}#}
-{#        {% for gzh in gzhs %}#}
-{##}
-{#            <li><a href=/article/{{ gzh.weixin_id }}>公众号:{{ gzh.name }}</a></li>#}
-{#            <li>微信号:{{ gzh.weixin_id }}</li>#}
-{#            <li>功能介绍:{{ gzh.introduction }}</li>#}
-{#            <li>微信认证:{{ gzh.verify_name }}</li>#}
-{#            <li><img src="static/images/{{ gzh.weixin_id }}.png"></li>#}
-{#            <li><a href=/article/new/{{ gzh.weixin_id }}>今日更新</a></li>#}
-{#        {% endfor %}#}
-{#        {% paginate %}#}
-{#        </ul>#}
+
 <table class="table">
     <thead class="thead-inverse">
         <tr>
-          <th>#</th>
-
+            <th>  </th>
           <th>公众号</th>
           <th>微信号</th>
           <th>功能介绍</th>
-            <th>微信认证</th>
-            <th>头像</th>
+          <th>微信认证</th>
+          <th>头像</th>
         </tr>
     </thead>
   {% for gzh in gzhs %}
@@ -41,4 +28,22 @@
   </tbody>
   {% endfor %}
 </table>
+
+    <div class="pagination">
+    <span class="step-links">
+        {% if gzhs.has_previous %}
+            <a href="?page={{ gzhs.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ gzhs.number }} of {{ gzhs.paginator.num_pages }}.
+        </span>
+
+        {% if gzhs.has_next %}
+            <a href="?page={{ gzhs.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+
+</div>
+
 {% endblock %}

@@ -22,7 +22,7 @@ import os
 urlpatterns = [
     url(r'article/update/gzh', views.gzh_updated, name='gzh_updated'),
     url(r'article/update/article', views.articles_updated, name='articles_updated'),
-    url(r'article/new/(?P<gzh_id>[\w\-]+)$', views.new_articles, name='new_article'),
+    url(r'article/new/(?P<gzh_id>[\w\-]+)$', views.today_articles, name='new_article'),
     url(r'article/add_gzh', views.add_gzh, name='add_gzh'),
     url(r'article/content/(?P<id>[\w\-]+)$', views.article_content, name='article_content'),
     url(r'^admin/', admin.site.urls),

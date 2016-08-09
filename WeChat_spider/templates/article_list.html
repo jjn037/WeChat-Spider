@@ -2,26 +2,12 @@
 {% block title %}文章列表{% endblock %}
 
 {% block body_block %}
-{#    <script src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>#}
-{#<ul>#}
-{#    {% for item in date_articles %}#}
-{##}
-{#            <li>date:{{ item.0 }}</li>#}
-{#        {% for article in item.1 %}#}
-{##}
-{#        <li><a href=/article/content/{{ article.id }}>{{ article.title }}</a></li>#}
-{#       {% endfor %}#}
-{#        {% endfor %}#}
-{#    {% endfor %}#}
-{##}
-{##}
-{#</ul>#}
+
 
 <table class="table">
     <thead class="thead-inverse">
         <tr>
-          <th>#</th>
-
+          <th>  </th>
           <th>日期</th>
           <th>title</th>
     </thead>
@@ -40,4 +26,23 @@
   </tbody>
   {% endfor %}
 </table>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if date_articles.has_previous %}
+            <a href="?page={{ date_articles.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ date_articles.number }} of {{ date_articles.paginator.num_pages }}.
+        </span>
+
+        {% if date_articles.has_next %}
+            <a href="?page={{ date_articles.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+
+</div>
+
+
 {% endblock %}

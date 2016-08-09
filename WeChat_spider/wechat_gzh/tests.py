@@ -41,6 +41,7 @@ from wechat_gzh.models import GZH, Article
 #                     _dict = {'date': day, 'title': _article}
 #                     _list.append(_dict)
 #
+
 #
 # for d in _list:
 #     print(d['date'])
