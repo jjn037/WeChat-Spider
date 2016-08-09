@@ -21,9 +21,11 @@ def index(request):
 #
 #     return render_to_response('article_list.html', article_dict)
 def article(request, gzh_id):
+    rows = 0
     article_list = Article.objects.filter(gzh__weixin_id__exact=gzh_id)[0:]
     grouped_articles = {}
     for article in article_list:
+        rows += 1
         articles = grouped_articles.get(article.publish_date) or []
         articles.append(article)
         grouped_articles[article.publish_date] = articles
