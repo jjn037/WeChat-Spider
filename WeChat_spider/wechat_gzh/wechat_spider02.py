@@ -234,15 +234,6 @@ class Wechat_gzh():
 
                         ##########################################
 
-
-# def add_name(name):
-#     g_l = GZH_list.objects.get_or_create(name=name)[0]
-#     print(g_l.id)
-#     print(g_l)
-#     print(type(g_l))
-#     print('ppp')
-#     return g_l
-
 def add_info(gzh_name, id, pic, qr_code, wxrz, info):
 
     g_i = GZH.objects.get_or_create(name=gzh_name)[0]

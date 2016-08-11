@@ -16,8 +16,8 @@ from wechat_gzh.models import GZH, Article
 
 
 class WXGZH():
-    def __init__(self, gzh_id):
-        self.gzh_id = gzh_id
+    def __init__(self, gzh_ids):
+        self.gzh_ids = gzh_ids
         self.host = 'http://weixin.sogou.com/weixin?type=1&query='
         self.gzh_info = []
         self.cookies = {
@@ -49,7 +49,8 @@ class WXGZH():
         }
 
     def gzh_info_list(self):
-                wechat_search_url = self.host + self.gzh_id
+        for gzh_id in self.gzh_ids:
+                wechat_search_url = self.host + gzh_id
                 print(wechat_search_url)
                 # print('page='+str(i))
                 # s = requests.Session()  # 可以在多次访问中保留cookie

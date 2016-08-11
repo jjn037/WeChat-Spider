@@ -1,7 +1,8 @@
-from django.shortcuts import render, render_to_response, RequestContext
+from django.shortcuts import render, render_to_response, RequestContext, HttpResponse
 from wechat_gzh.models import GZH, Article
-from wechat_gzh.forms import GZHForm
+from wechat_gzh.forms import GZHForm, Fuzzy_search
 from wechat_gzh.add_gzh import WXGZH
+from wechat_gzh.spider_for_fuzzy_search import Wechat_gzh_fuzzy_search
 from django.template import RequestContext
 import time, datetime
 import json
@@ -26,12 +27,6 @@ def index(request):
     return render_to_response('index.html', gzh_dict)
 
 
-# def article(request, gzh_id):
-#     article_list = Article.objects.filter(gzh__weixin_id__exact=gzh_id)
-#
-#     article_dict = {'articles': article_list}
-#
-#     return render_to_response('article_list.html', article_dict)
 def article(request, gzh_id):
     article_list = Article.objects.filter(gzh__weixin_id__exact=gzh_id)[0:]
     grouped_articles = {}
@@ -77,12 +72,29 @@ def add_gzh(request):
             id = form.cleaned_data['weixin_id']
             gzh = WXGZH(id)
             gzh.gzh_info_list()
+            print()
             return index(request)
         else:
             print(form.errors)
     else:
         form = GZHForm()
     return render_to_response('add_gzh.html', {'form': form}, context_instance=RequestContext(request))
+
+
+def fuzzy_search(request):
+    if request.method == 'POST':
+        form = Fuzzy_search(request.POST)
+        if form.is_valid():
+            key_words = form.cleaned_data['key']
+            wx = Wechat_gzh_fuzzy_search([key_words])
+            fuzzy_info = wx.gzh_info_list()
+
+            return render_to_response('fuzzy_search.html', fuzzy_info)
+        else:
+            print(form.errors)
+    else:
+        form = Fuzzy_search()
+    return render_to_response('fuzzy_search.html', {'form': form, 'names_id': []}, context_instance=RequestContext(request))
 
 
 def today_articles(request, gzh_id):
@@ -164,4 +176,22 @@ def articles_updated(request):
 
     article_updated_dict = {'articles': _article_list}
     return render_to_response('articles_updated.html', article_updated_dict)
+
+
+def delete_id(request):
+    if request.method == 'POST':
+        status_dict = {'success': True}
+        return HttpResponse(json.dumps(status_dict), content_type='application/json')
+
+
+def fuzzy_search_spider(request):
+
+    if request.method == 'POST':
+        _ids = request.POST.getlist('gzh')
+        # print(_ids)
+
+    gzh = WXGZH(_ids)
+    gzh.gzh_info_list()
+
+    return index(request)
 

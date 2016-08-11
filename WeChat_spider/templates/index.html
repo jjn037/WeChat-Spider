@@ -13,6 +13,7 @@
           <th>功能介绍</th>
           <th>微信认证</th>
           <th>头像</th>
+{#            <th>删除</th>#}
         </tr>
     </thead>
   {% for gzh in gzhs %}
@@ -20,10 +21,11 @@
     <tr>
       <th scope="row"></th>
       <td><a href=/article/{{ gzh.weixin_id }}>{{ gzh.name }}</a></td>
-      <td>{{ gzh.weixin_id }}</td>
+      <td> {{ gzh.weixin_id }}</td>
       <td>{{ gzh.introduction }}</td>
       <td>{{ gzh.verify_name }}</td>
-      <td><img src="static/images/{{ gzh.weixin_id }}.png"></td>
+      <td><img src="./static/images/{{ gzh.weixin_id }}.png"></td>
+{#        <td><button type="button" id='delete'>删除</button></td>#}
     </tr>
   </tbody>
   {% endfor %}
@@ -46,4 +48,13 @@
 
 </div>
 
+{#    <script>#}
+{#    $(document).ready(function(){#}
+{#      $("#delete").click(function(){#}
+{#          var _id=$("#wx_id").val();#}
+{##}
+{#        $.get("article/delete/",{'id': _id})#}
+{#      });#}
+{#    });#}
+{#</script>#}
 {% endblock %}
