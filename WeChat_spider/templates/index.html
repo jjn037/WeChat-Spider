@@ -1,36 +1,51 @@
-{#{% load pagination_tags %}#}
 {% extends 'base.html' %}
 {% block title %}公众号列表{% endblock %}
 
 {% block body_block %}
+<style type="text/css">
+    div.container-fluid {
+        position: relative;
+        left: -120px;
+    }
+        div.pagination
+        {
+        position:fixed;
+        bottom:0
+        }
 
-<table class="table">
-    <thead class="thead-inverse">
+</style>
+
+<div class="container-fluid">
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th>  </th>
+              <th>公众号</th>
+              <th>微信号</th>
+              <th>功能介绍</th>
+              <th>微信认证</th>
+              <th>头像</th>
+                <th>删除</th>
+            </tr>
+        </thead>
+      {% for gzh in gzhs %}
+      <tbody>
         <tr>
-            <th>  </th>
-          <th>公众号</th>
-          <th>微信号</th>
-          <th>功能介绍</th>
-          <th>微信认证</th>
-          <th>头像</th>
-{#            <th>删除</th>#}
+          <th scope="row"></th>
+          <td><a href=/article/{{ gzh.weixin_id }}>{{ gzh.name }}</a></td>
+          <td> {{ gzh.weixin_id }}</td>
+          <td>{{ gzh.introduction }}</td>
+          <td>{{ gzh.verify_name }}</td>
+          <td><img src="./static/images/{{ gzh.weixin_id }}.png"></td>
+            <td><button type="button" id='delete'>删除</button></td>
         </tr>
-    </thead>
-  {% for gzh in gzhs %}
-  <tbody>
-    <tr>
-      <th scope="row"></th>
-      <td><a href=/article/{{ gzh.weixin_id }}>{{ gzh.name }}</a></td>
-      <td> {{ gzh.weixin_id }}</td>
-      <td>{{ gzh.introduction }}</td>
-      <td>{{ gzh.verify_name }}</td>
-      <td><img src="./static/images/{{ gzh.weixin_id }}.png"></td>
-{#        <td><button type="button" id='delete'>删除</button></td>#}
-    </tr>
-  </tbody>
-  {% endfor %}
-</table>
+      </tbody>
+      {% endfor %}
+    </table>
+</div>
 
+
+<nav>
     <div class="pagination">
     <span class="step-links">
         {% if gzhs.has_previous %}
@@ -47,14 +62,5 @@
     </span>
 
 </div>
-
-{#    <script>#}
-{#    $(document).ready(function(){#}
-{#      $("#delete").click(function(){#}
-{#          var _id=$("#wx_id").val();#}
-{##}
-{#        $.get("article/delete/",{'id': _id})#}
-{#      });#}
-{#    });#}
-{#</script>#}
+</nav>
 {% endblock %}
