@@ -16,8 +16,8 @@ from wechat_gzh.models import GZH, Article
 
 
 class WXGZH():
-    def __init__(self, gzh_ids):
-        self.gzh_ids = gzh_ids
+    def __init__(self, gzh_id):
+        self.gzh_id = gzh_id
         self.host = 'http://weixin.sogou.com/weixin?type=1&query='
         self.gzh_info = []
         self.cookies = {
@@ -49,8 +49,7 @@ class WXGZH():
         }
 
     def gzh_info_list(self):
-        for gzh_id in self.gzh_ids:
-                wechat_search_url = self.host + gzh_id
+                wechat_search_url = self.host + self.gzh_id
                 print(wechat_search_url)
                 # print('page='+str(i))
                 # s = requests.Session()  # 可以在多次访问中保留cookie
@@ -64,47 +63,14 @@ class WXGZH():
                 soup = BeautifulSoup(r.content.decode('utf-8', 'ignore'), "html.parser")
                 # print(soup)
                 for items in soup.findAll('div', {'class': 'wx-rb'}):
-                    # print(items)
-                    # print('llllllll')
-                    name = items.find('h3').text
-                    print('name=' + name)
-                    wx_id = items.find('label').text
-                    print('account=' + wx_id)
-                    # print(wx_id)
-                    fun_infos = items.select('.sp-txt')
-                    fun_info = fun_infos[0].text
-                    print('introduction=' + fun_info)
-                    try:
-                        wxrz = fun_infos[1].text
-                        print('verify_name=' + wxrz)
-                    except IndexError:
-                        pass
                     gzh_paper_url = items.get('href')
-                    # print(gzh_paper_url)
-                    gzh_head_pics = items.find_all("img")  # 公众号头像
+                    name = items.find('h3').text
 
-                    gzh_head_pic = gzh_head_pics[0].get('src')
-                    path = settings.STATIC_PATH + '/images'
-
-                    os.chdir(path)
-                    os.getcwd()
-                    f_name = wx_id + '.png'
-                    # 保存文件时候注意类型要匹配，如要保存的图片为jpg，则打开的文件的名称必须是jpg格式，否则会产生无效图片
-                    conn = urllib.request.urlopen(gzh_head_pic)
-                    f = open(f_name, 'wb')
-                    f.write(conn.read())
-                    f.close()
-                    print('Pic Saved!')
-
-                    qr_code = gzh_head_pics[2].get('src')
-                    print('gzh_head_pic=' + gzh_head_pic)
-                    print('qr_code=' + qr_code)
-
-                    try:
-                        gzh = add_info(gzh_name=name, id=wx_id, pic=gzh_head_pic, qr_code=qr_code, wxrz=wxrz,
-                                       info=fun_info)
-                    except:
-                        pass
+                    # try:
+                    gzh = add_info(gzh_name=name)
+                    print('add info ok')
+                    # except:
+                    #     print('add info error')
 
                     ########################################公众号文章名字和url抓取
                     paper_content_headers = {
@@ -137,6 +103,7 @@ class WXGZH():
                         return s
 
                     paper = []
+
                     paper_headers = {
                         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
                         'Accept-Encoding': 'gzip, deflate, sdch',
@@ -150,13 +117,10 @@ class WXGZH():
                         # 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:47.0) Gecko/20100101 Firefox/47.0'
                     }
 
-                    # url = 'http://mp.weixin.qq.com/profile?src=3&timestamp=1469608988&ver=1&signature=cVUmDPWKg3xdcidBjO*ahZUwZYxCl8DbLLg*ZHN6GjNQm8Lydd8LKUzKHqZmJ3*eXEn*4zNKW82X7Tndh3xjug=='
-                    # url = 'http://mp.weixin.qq.com/profile?src=3&timestamp=1469613000&ver=1&signature=cVUmDPWKg3xdcidBjO*ahZUwZYxCl8DbLLg*ZHN6GjNQm8Lydd8LKUzKHqZmJ3*eLnrDC3iIsAsMCobfOH7rVw=='
-                    # url = 'http://mp.weixin.qq.com/profile?src=3&timestamp=1469668882&ver=1&signature=cVUmDPWKg3xdcidBjO*ahZUwZYxCl8DbLLg*ZHN6GjNQm8Lydd8LKUzKHqZmJ3*e560j0cyu70q5PBx9Lwbv7Q=='
                     try:
                         r = requests.get(url=gzh_paper_url, headers=paper_headers)
                     except:
-                        pass
+                        print('解析paper_url 错误')
                     sleep(5)
                     html = r.content.decode('utf-8', 'ignore')
                     # print(r.content.decode('utf-8', 'ignore'))
@@ -169,8 +133,10 @@ class WXGZH():
                     for i in range(len(paper_titles_raw)):
                         paper_title = replace_html(str(paper_titles_raw[i]))
                         paper_url_raw = replace_html(str(paper_urls_raw[i]))
-                        # p = [paper_title, paper_url]
-                        # paper.append(p)
+                        paper.append(paper_title)
+                        if paper != '':
+                            change = True
+
                         ############文章链接、题目
                         paper_url = "http://mp.weixin.qq.com" + paper_url_raw
                         print('paper_url=' + paper_url)
@@ -190,72 +156,52 @@ class WXGZH():
                             date = date_item[0].text
                             print('date=' + date)
                         else:
-                            date = []
+                            date = ''
 
                         content_item = soup_paper_raw.select('#img-content #js_content')
                         if len(content_item) != 0:
                             content = content_item[0].text
                         else:
-                            content = []
-                        # print(content)
-                        #
-                        # content_img_url = soup_paper_raw.find_all('#img-content #js_content img')
-                        # print(content_img_url)
+                            content = ''
+
                         paper_html = content_raw.content.decode('utf-8', 'ignore')
-                        # srcs_raw = re.findall(r'data-src=(.*?)data-ratio', paper_html)
-                        # # print((srcs_raw))
-                        # srcs = replace_html(str(srcs_raw))
-                        # print(srcs)
+
                         source_url_raw = re.findall(r'msg_source_url = \'(.*?)\';', paper_html)
                         if len(source_url_raw) != 0:
                             source_url = replace_html(str(source_url_raw[0]))
                             print('source_url=' + source_url)
                         else:
-                            source_url = []
+                            source_url = ''
 
                         try:
-
                             iframe = soup_paper_raw.iframe
                             video_url_raw = iframe.get('data-src')
                             video_url = replace_html(str(video_url_raw))
                             print('video_url=' + video_url)
                         except:
-                            video_url = []
+                            video_url = ''
 
                         try:
                             add_paper(name=gzh, title=paper_title, content=content, date=date, source_url=source_url,
-                                      video_url=video_url)
+                                      video_url=video_url, change=change)
                             print('add article')
                         except:
                             print('add paper error')
 
-
-
                             ##########################################
 
 
-# def add_name(name):
-#     g_l = GZH_list.objects.get_or_create(name=name)[0]
-#     print(g_l.id)
-#     print(g_l)
-#     print(type(g_l))
-#     print('ppp')
-#     return g_l
-
-def add_info(gzh_name, id, pic, qr_code, wxrz, info):
+def add_info(gzh_name='', id='', pic='', qr_code='', wxrz='', info=''):
     g_i = GZH.objects.get_or_create(name=gzh_name)[0]
     print(g_i)
     print('ok')
-    g_i.weixin_id = id
-    g_i.head_pic = pic
-    g_i.qr_code = qr_code
-    g_i.introduction = info
-    g_i.verify_name = wxrz
+    # g_i.weixin_id = id
+
     g_i.save()
     return g_i
 
 
-def add_paper(name, title, content, date, source_url=[], video_url=[]):
+def add_paper(name, title, content, date, source_url, video_url, change):
     paper_list = Article.objects.get_or_create(gzh=name, title=title)[0]
     # paper_list.gzh = name
     paper_list.title = title
@@ -263,6 +209,25 @@ def add_paper(name, title, content, date, source_url=[], video_url=[]):
     paper_list.publish_date = date
     paper_list.source_url = source_url
     paper_list.video_url = video_url
-
+    paper_list.change = change
     paper_list.save()
+
     return paper_list
+
+
+
+def main():
+    gzh_list = GZH.objects.all()
+    for gzh in gzh_list:
+        gzh_id = gzh.weixin_id
+        _gzh = WXGZH(gzh_id)
+        _gzh.gzh_info_list()
+
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+

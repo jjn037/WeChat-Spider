@@ -2,7 +2,7 @@
 {% block title %}fuzzy search{% endblock %}
 
 {% block body_block %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" xmlns="http://www.w3.org/1999/html"></script>
 
 <div class="clearfix visible-xs"></div>
 
@@ -10,18 +10,20 @@
    <div class="row" >
        <div class="col-xs-6 col-sm-3">
 
-            <form id="gzh_form" method="post" action="">
-                    <div class="field form-group col-sm-10">
-                        {{ form.message.errors }}
-                        <label for="id_key" class="input-group-addon">关键字</label>
-                        <input type="text" class="form-control"  aria-describedby="basic-addon1">
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-10">
-                            <input type="submit" id="submit_key" class="btn btn-primary btn-block" value="Submit"></button>
-                        </div>
-                    </div>
-            </form>
+{#            <form id="gzh_form" method="post" action="">#}
+{#                <p>#}
+{#                    <div class="field form-group col-sm-10">#}
+{#                        {{ form.message.errors }}#}
+{#                        <label for="id_key" class="input-group-addon">关键字</label>#}
+{#                        <input type="text" class="form-control"  aria-describedby="basic-addon1">#}
+{#                    </div>#}
+{#                    <div class="form-group">#}
+{#                        <div class="col-sm-10">#}
+{#                            <input type="submit" id="submit_key" class="btn btn-primary btn-block" value="Submit"></button>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </p>#}
+{#            </form>#}
        </div>
    </div>
 </div>
@@ -56,11 +58,11 @@
 
 <script>
     $(document).ready(function () {
-        var s = $('#fuzzy_search_result').hide();
-        $("#submit_key").click(function() {
-                s = $("#fuzzy_search_result").show();
-                $("#fuzzy_search").hide()
-            });
+{#        var s = $('#fuzzy_search_result').hide();#}
+{#        $("#submit_key").click(function() {#}
+{#                s = $("#fuzzy_search_result").show();#}
+{#                $("#fuzzy_search").hide()#}
+{#            });#}
 
         $('.delete').click(function () {
             var $this = $(this);

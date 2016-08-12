@@ -54,27 +54,28 @@ class Wechat_gzh_fuzzy_search:
         name_id_list = []
         # for key_word in self.kws:
 
-        for i in range(1):
+        for i in range(1, 10):
             print('wwww')
-            # wechat_search_url = self.host + self.keyword + '&page=' + str(i)
-            wechat_search_url = self.host + '钓鱼' + '&page=' + str(i)
-            print(wechat_search_url)
-            print('page='+str(i))
-            try:
-                r = requests.get(wechat_search_url, headers=self.headers, cookies=self.cookies)
-            except:
-                pass
-            sleep(5)
-            soup = BeautifulSoup(r.content.decode('utf-8', 'ignore'), "html.parser")
-            for items in soup.findAll('div', {'class': 'wx-rb'}):
-                name = items.find('h3').text
-                # _name.append(name)
-                print('name='+name)
-                wx_id = items.find('label').text
-                # _id.append(wx_id)
-                name_id_dict = {'name': name, 'id': wx_id}
-                name_id_list.append(name_id_dict)
+            for key_word in self.kws:
+                # wechat_search_url = self.host + self.keyword + '&page=' + str(i)
+                wechat_search_url = self.host + key_word + '&page=' + str(i)
+                print(wechat_search_url)
+                print('page='+str(i))
+                try:
+                    r = requests.get(wechat_search_url, headers=self.headers, cookies=self.cookies)
+                except:
+                    pass
+                sleep(5)
+                soup = BeautifulSoup(r.content.decode('utf-8', 'ignore'), "html.parser")
+                for items in soup.findAll('div', {'class': 'wx-rb'}):
+                    name = items.find('h3').text
+                    # _name.append(name)
+                    print('name='+name)
+                    wx_id = items.find('label').text
+                    # _id.append(wx_id)
+                    name_id_dict = {'name': name, 'id': wx_id}
+                    name_id_list.append(name_id_dict)
 
-        return {'names_ids': name_id_list}
+            return {'names_ids': name_id_list}
 
 

@@ -1,13 +1,14 @@
-from django.shortcuts import render, render_to_response, RequestContext, HttpResponse
-from wechat_gzh.models import GZH, Article
-from wechat_gzh.forms import GZHForm, Fuzzy_search
-from wechat_gzh.add_gzh import WXGZH
-from wechat_gzh.spider_for_fuzzy_search import Wechat_gzh_fuzzy_search
-from django.template import RequestContext
-import time, datetime
 import json
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import time
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render_to_response, HttpResponse
+from django.template import RequestContext
+
+from spider.spider_add_gzh import Wechat_gzh
+from spider.spider_for_fuzzy_search import Wechat_gzh_fuzzy_search
+from wechat_gzh.forms import GZHForm, Fuzzy_search
+from wechat_gzh.models import GZH, Article
 
 
 def index(request):
@@ -65,36 +66,40 @@ def article_content(request, id):
 
 def add_gzh(request):
     if request.method == 'POST':
-        form = GZHForm(request.POST)
-        # print(dir(form))
-        if form.is_valid():
+#         form = GZHForm(request.POST.get('weixin_id'))
+#         # print(dir(form))
+#         if form.is_valid():
             # form.save()
-            id = form.cleaned_data['weixin_id']
-            gzh = WXGZH(id)
-            gzh.gzh_info_list()
-            print()
+            # id = form.cleaned_data['weixin_id']
+            id = request.POST.getlist('weixin_id')
+            # gzh = WXGZH(id)
+            # gzh.gzh_info_list()
+            wx = Wechat_gzh(id)
+            wx.gzh_info_list()
+            print('ok')
             return index(request)
-        else:
-            print(form.errors)
-    else:
-        form = GZHForm()
-    return render_to_response('add_gzh.html', {'form': form}, context_instance=RequestContext(request))
+    #     else:
+    #         print(form.errors)
+    # else:
+    #     form = GZHForm()
+    # return render_to_response('base.html', {'form': form}, context_instance=RequestContext(request))
 
 
 def fuzzy_search(request):
     if request.method == 'POST':
-        form = Fuzzy_search(request.POST)
-        if form.is_valid():
-            key_words = form.cleaned_data['key']
-            wx = Wechat_gzh_fuzzy_search([key_words])
-            fuzzy_info = wx.gzh_info_list()
+        # form = Fuzzy_search(request.POST)
+        # if form.is_valid():
+        #     key_words = form.cleaned_data['key']
+        id = request.POST.getlist('weixin_id')
+        wx = Wechat_gzh_fuzzy_search(id)
+        fuzzy_info = wx.gzh_info_list()
 
-            return render_to_response('fuzzy_search.html', fuzzy_info)
-        else:
-            print(form.errors)
-    else:
-        form = Fuzzy_search()
-    return render_to_response('fuzzy_search.html', {'form': form, 'names_id': []}, context_instance=RequestContext(request))
+        return render_to_response('fuzzy_search.html', fuzzy_info)
+    #     else:
+    #         print(form.errors)
+    # else:
+    #     form = Fuzzy_search()
+    # return render_to_response('fuzzy_search.html', {'form': form, 'names_id': []}, context_instance=RequestContext(request))
 
 
 def today_articles(request, gzh_id):
@@ -117,25 +122,26 @@ def today_articles(request, gzh_id):
 def gzh_updated(request):
     gzh_dict = {}
     gzhs = []
+    _ids = []
     try:
         gzhs_list = GZH.objects.all()[0:]
     except:
         pass
     for _gzh in gzhs_list:
         gzh_id = _gzh.weixin_id
-        try:
-            article = Article.objects.filter(gzh__weixin_id__exact=gzh_id)[0]
+
+        for article in Article.objects.filter(gzh__weixin_id__exact=gzh_id):
             print(article.title)
             today = time.strftime('%Y-%m-%d')
             print('today=' + today)
             if article.publish_date == today:
                 gzh_updated = article.gzh.weixin_id
                 print('update=' + gzh_updated)
-                gzhs.append(article)
-        except:
-            pass
+                if article.gzh.weixin_id not in _ids:
+                    _ids.append(article.gzh.weixin_id)
+                    gzhs.append(article)
 
-    paginator = Paginator(gzhs, 10)
+    paginator = Paginator(gzhs, 20)
     page = request.GET.get('page')
     try:
         _gzhs = paginator.page(page)
@@ -158,14 +164,14 @@ def articles_updated(request):
             print(article.title)
             today = time.strftime('%Y-%m-%d')
             print('today=' + today)
-            if article.publish_date != today:
+            if article.publish_date == today:
                 # gzh_updated = article.gzh.weixin_id
                 # print('update='+gzh_updated)
                 _article.append(article)
     except:
         pass
 
-    paginator = Paginator(_article, 10)
+    paginator = Paginator(_article, 20)
     page = request.GET.get('page')
     try:
         _article_list = paginator.page(page)
@@ -185,12 +191,9 @@ def delete_id(request):
 
 
 def fuzzy_search_spider(request):
-
-    if request.method == 'POST':
-        _ids = request.POST.getlist('gzh')
+    _ids = request.POST.getlist('gzh')
         # print(_ids)
-
-    gzh = WXGZH(_ids)
+    gzh = Wechat_gzh(_ids)
     gzh.gzh_info_list()
 
     return index(request)
