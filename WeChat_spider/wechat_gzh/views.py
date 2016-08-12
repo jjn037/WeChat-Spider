@@ -13,7 +13,7 @@ from wechat_gzh.models import GZH, Article
 def index(request):
     _gzh_list = GZH.objects.all()
 
-    paginator = Paginator(_gzh_list, 10)
+    paginator = Paginator(_gzh_list, 20)
     page = request.GET.get('page')
     try:
         gzh_list = paginator.page(page)
@@ -73,28 +73,23 @@ def fuzzy_search(request):
         fuzzy_info = wx.gzh_info_list()
 
         return render_to_response('fuzzy_search.html', fuzzy_info)
-    #     else:
-    #         print(form.errors)
-    # else:
-    #     form = Fuzzy_search()
-    # return render_to_response('fuzzy_search.html', {'form': form, 'names_id': []}, context_instance=RequestContext(request))
 
 
-def today_articles(request, gzh_id):
-    today_articles_dic = {}
-    new_article = []
-    try:
-        article_list = Article.objects.filter(gzh__weixin_id__exact=gzh_id)[0:]
-        today = time.strftime('%Y-%m-%d')
-        for article in article_list:
-            if article.publish_date == today:
-                new_article.append(article_list)
-                gzh_updated = article_list.gzh.weixin_id
-                # today_articles_dic['gzh_updated']
-                today_articles_dic = {'new_articles': new_article}
-    except:
-        pass
-    return render_to_response('today.html', today_articles_dic)
+# def today_articles(request, gzh_id):
+#     today_articles_dic = {}
+#     new_article = []
+#     try:
+#         article_list = Article.objects.filter(gzh__weixin_id__exact=gzh_id)[0:]
+#         today = time.strftime('%Y-%m-%d')
+#         for article in article_list:
+#             if article.publish_date == today:
+#                 new_article.append(article_list)
+#                 gzh_updated = article_list.gzh.weixin_id
+#                 # today_articles_dic['gzh_updated']
+#                 today_articles_dic = {'new_articles': new_article}
+#     except:
+#         pass
+#     return render_to_response('today.html', today_articles_dic)
 
 
 def gzh_updated(request):

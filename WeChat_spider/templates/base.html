@@ -34,16 +34,17 @@
               <li> <a href="{% url 'gzh_updated' %}">今日更新 公众号</a></li>
               <li> <a href="{% url 'articles_updated' %}">今日更新 文章</a></li>
 {#              <li> <a href="{% url 'fuzzy_search' %}">模糊搜索</a></li>#}
-              <li>
+
+
                     <form class="navbar-form navbar-left" action="{% url 'fuzzy_search' %}" method="post">
                       <div class="form-group">
                         <input type="text" name="weixin_id" class="form-control" placeholder="微信号">
                       </div>
                       <button type="submit" class="btn btn-default" name="submit">Submit</button>
                     </form>
-              </li>
-           </ul>
+</ul>
        </div>
+
 </nav>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
