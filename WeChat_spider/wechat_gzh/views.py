@@ -7,7 +7,6 @@ from django.template import RequestContext
 
 from spider.spider_add_gzh import Wechat_gzh
 from spider.spider_for_fuzzy_search import Wechat_gzh_fuzzy_search
-from wechat_gzh.forms import GZHForm, Fuzzy_search
 from wechat_gzh.models import GZH, Article
 
 
@@ -62,27 +61,6 @@ def article_content(request, id):
     content_dict = {'contents': article}
 
     return render_to_response('article_content.html', content_dict)
-
-
-def add_gzh(request):
-    if request.method == 'POST':
-#         form = GZHForm(request.POST.get('weixin_id'))
-#         # print(dir(form))
-#         if form.is_valid():
-            # form.save()
-            # id = form.cleaned_data['weixin_id']
-            id = request.POST.getlist('weixin_id')
-            # gzh = WXGZH(id)
-            # gzh.gzh_info_list()
-            wx = Wechat_gzh(id)
-            wx.gzh_info_list()
-            print('ok')
-            return index(request)
-    #     else:
-    #         print(form.errors)
-    # else:
-    #     form = GZHForm()
-    # return render_to_response('base.html', {'form': form}, context_instance=RequestContext(request))
 
 
 def fuzzy_search(request):

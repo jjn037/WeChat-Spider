@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'article/update/gzh', views.gzh_updated, name='gzh_updated'),
     url(r'article/update/article', views.articles_updated, name='articles_updated'),
     url(r'article/new/(?P<gzh_id>[\w\-]+)$', views.today_articles, name='new_article'),
-    url(r'article/add_gzh', views.add_gzh, name='add_gzh'),
+    # url(r'article/add_gzh', views.add_gzh, name='add_gzh'),
     url(r'article/fuzzy_search_spider', views.fuzzy_search_spider, name='fuzzy_search_spider'),
     url(r'article/fuzzy_search', views.fuzzy_search, name='fuzzy_search'),
 
