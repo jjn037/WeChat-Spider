@@ -229,8 +229,8 @@ class Wechat_gzh():
                            print('add paper error')
 
 
-
                         ##########################################
+
 
 def add_info(gzh_name, id, pic, qr_code, wxrz, info):
 
@@ -261,7 +261,7 @@ def add_paper(name, title, content, date, source_url=[], video_url=[]):
 
 #
 # def main():
-#     key_words = ['SINA_NBA']
+#     key_words = ['钓鱼']
 #     wx = Wechat_gzh(key_words)
 #     wx.gzh_info_list()
 #

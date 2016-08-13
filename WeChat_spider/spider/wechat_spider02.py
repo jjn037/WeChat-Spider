@@ -51,16 +51,16 @@ class Wechat_gzh():
     def gzh_info_list(self):
 
         for key_word in self.kws:
-            for i in range(1, 20):  # 此处调试完修改
+            for i in range(1, 15):  # 此处调试完修改
 
-                # wechat_search_url = self.host + key_word + '&page=' + str(i)
-                wechat_search_url = self.host + '钓鱼' + '&page=' + str(i)
+                wechat_search_url = self.host + key_word + '&page=' + str(i)
+                # wechat_search_url = self.host + '钓鱼' + '&page=' + str(i)
                 print(wechat_search_url)
                 print('page='+str(i))
                 try:
-                    r = requests.get(wechat_search_url, headers=self.headers, cookies=self.cookies)
+                    r = requests.get(wechat_search_url, headers=self.headers, cookies=self.cookies, timeout=1)
                 except:
-                    pass
+                    print('get wechat_search_url error')
                 sleep(5)
                 # print(r.content)
                 soup = BeautifulSoup(r.content.decode('utf-8', 'ignore'), "html.parser")
@@ -260,8 +260,8 @@ def add_paper(name, title, content, date, source_url=[], video_url=[]):
 
 
 def main():
-    # key_words = ['钓鱼', '鱼竿', '鱼饵', '钓场', '钓箱', '钓竿', '饵料']
-    key_words = ['SINA_NBA']
+    key_words = ['钓鱼', '鱼竿', '鱼饵', '钓场', '钓箱', '钓竿', '饵料']
+    # key_words = ['SINA_NBA']
     wx = Wechat_gzh(key_words)
     wx.gzh_info_list()
 

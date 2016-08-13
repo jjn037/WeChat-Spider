@@ -12,8 +12,12 @@ import django, time, datetime
 django.setup()
 from wechat_gzh.models import GZH, Article
 
-def a():
-    return {'q':1,'w':2}
 
-b=a()
-print(b['q'])
+article_list = Article.objects.filter(gzh__weixin_id__exact='diao--yu')
+grouped_articles = {}
+for article in article_list:
+    articles = grouped_articles.get(article.publish_date) or []
+    articles.append(article)
+    grouped_articles[article.publish_date] = articles
+
+print(grouped_articles)
