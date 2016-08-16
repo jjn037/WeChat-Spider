@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}change cookies{% endblock %}
+
+{% block body_block %}
+{#<div class="container">#}
+{#<div class="row">#}
+{#<div class="col-md-2"></div>#}
+    <form action="{% url 'cookies_changed' %}" method="post">
+          <div class="form-group">
+          <label for="name">cookies</label>
+          <textarea name="cookies" class="form-control" rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn btn-default" name="submit">Submit</button>
+    </form>
+{#</div>#}
+{#    </div>#}
+{#    </div>#}
+{% endblock %}

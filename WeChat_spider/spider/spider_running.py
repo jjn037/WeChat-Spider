@@ -21,22 +21,7 @@ class WXGZH():
         self.host = 'http://weixin.sogou.com/weixin?type=1&query='
         self.gzh_info = []
         self.cookies = {
-            'ABTEST': '0|1469412044|v1',
-            'SNUID': '893EA94B9294AAFDB77B7FDE926A6AAB',
-            'IPLOC': 'CN3700',
-            'SUID': '18AC3BDA433E900A00000000579572CC',
-            'JSESSIONID': 'aaadvUENQmZQYe-rf6Pxv',
-            'SUV': '1469412047751761',
-            'weixinIndexVisited': '1',
-            'sct': '4',
-            'ppinf': '5|1469501867|1470711467|dHJ1c3Q6MToxfGNsaWVudGlkOjQ6MjAxN3x1bmlxbmFtZToxMTppJUUyJTgwJTg2b3xjcnQ6MTA6MTQ2OTUwMTg2N3xyZWZuaWNrOjExOmklRTIlODAlODZvfHVzZXJpZDo0NDo4M0JEMzQ5QUE4QUE5MTlBMzFENjUyMUM1Q0IyRDAxRkBxcS5zb2h1LmNvbXw',
-            'pprdig': 'lM6Ym9QoLOesylGeaS5w8B7nz2XyVdAEmLf4mTg7EAY61vjFJQi3f_E20yG4UsK0Ifx2yXNE7rjK1wbkQQI9G0LW4d_Q8MKmg0B1KODSLkzJw2_0UQRpIhz0YTBQs6pkBbdVOhOsRAX7VimSh5TXRL8krfsXkysfhg7FzqvOFfQ',
-            'ppmdig': '14695018670000008f623b041a9ba269ad4843f719b36d3c',
-            'PHPSESSID': '8g0c1nf9v59uluglmgc4dmnk25',
-            'SUIR': '893EA94B9294AAFDB77B7FDE926A6AAB',
-            'sucessCount': '1|Tue, 26 Jul 2016 03:48:00 GMT',
-            'LSTMV': '513 % 2C137',
-            'LCLKINT': '33357'
+
         }
         self.headers = {
             'Accept': 'text/javascript, application/javascript, application/ecmascript, application/x-ecmascript, */*; q=0.01',
@@ -49,144 +34,148 @@ class WXGZH():
         }
 
     def gzh_info_list(self):
-                wechat_search_url = self.host + self.gzh_id
-                print(wechat_search_url)
-                # print('page='+str(i))
-                # s = requests.Session()  # 可以在多次访问中保留cookie
-                # s.post(login_url, {'username': username, 'password': password,}, headers=headers)
+        cookies_raw = open('../cookies.txt').read()
+        _cookies_raw = cookies_raw.replace('\r', '').replace('\n', '').split(';')
+
+        for _cookies in _cookies_raw:
+            coolies = _cookies.split('=')
+            self.cookies[coolies[0]] = coolies[1]
+
+        wechat_search_url = self.host + self.gzh_id
+        print(wechat_search_url)
+        try:
+            r = requests.get(wechat_search_url, headers=self.headers, cookies=self.cookies)
+        except ConnectionError:
+            pass
+        sleep(4)
+        # print(r.content)
+        soup = BeautifulSoup(r.content.decode('utf-8', 'ignore'), "html.parser")
+        # print(soup)
+        for items in soup.findAll('div', {'class': 'wx-rb'}):
+            gzh_paper_url = items.get('href')
+            name = items.find('h3').text
+
+            try:
+                gzh = add_info(gzh_name=name)
+                print('add info ok')
+            except:
+                print('add info error')
+
+            ########################################公众号文章名字和url抓取
+            paper_content_headers = {
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                'Accept-Encoding': 'gzip, deflate',
+                'Accept-Language': 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3',
+                'Connection': 'keep-alive',
+                # 'Upgrade-Insecure-Requests' : '1',
+                'Host': 'mp.weixin.qq.com',
+                'Referer': 'http://mp.weixin.qq.com/profile?src=3&timestamp=1469719174&ver=1&signature=cVUmDPWKg3xdcidBjO*ahZUwZYxCl8DbLLg*ZHN6GjNQm8Lydd8LKUzKHqZmJ3*e3K*f8i2odPMFb*njwN2t*g==',
+                # 'Referer' : 'http://weixin.sogou.com/weixin?type=1&query=%E9%92%93%E9%B1%BC',
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36',
+                # 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:47.0) Gecko/20100101 Firefox/47.0'
+            }
+            paper_content_cookies = {
+                'pgv_pvi': '9305632768',
+                'pgv_si': 's4923546624'
+            }
+
+            def replace_html(s):
+                s = s.replace('&quot;:', '')
+                s = s.replace('&quot;,', '')
+                s = s.replace('&quot;', '')
+                s = s.replace('&amp;', '&')
+                s = s.replace('amp;', '')
+                s = s.replace('&lt;', '<')
+                s = s.replace('&gt;', '>')
+                s = s.replace('&nbsp;', ' ')
+                s = s.replace(r"\\", r'')
+                return s
+
+            paper = []
+
+            paper_headers = {
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                'Accept-Encoding': 'gzip, deflate, sdch',
+                'Accept-Language': 'zh-CN,zh;q=0.8',
+                'Connection': 'keep-alive',
+                # 'Upgrade-Insecure-Requests' : '1',
+                'Host': 'mp.weixin.qq.com',
+                'Referer': 'http://weixin.sogou.com/weixin?type=1&query=%E9%92%93%E9%B1%BC&ie=utf8&_sug_=y&_sug_type_=',
+                # 'Referer' : 'http://weixin.sogou.com/weixin?type=1&query=%E9%92%93%E9%B1%BC',
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36',
+                # 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:47.0) Gecko/20100101 Firefox/47.0'
+            }
+
+            try:
+                r = requests.get(url=gzh_paper_url, headers=paper_headers, timeout=2)
+                print('gzh_paper_url ok ')
+            except:
+                print('解析paper_url 错误')
+            sleep(5)
+            html = r.content.decode('utf-8', 'ignore')
+            # print(r.content.decode('utf-8', 'ignore'))
+            # print(type(html))
+
+            paper_titles_raw = re.findall(r'title(.*?)digest', html)
+            paper_urls_raw = re.findall(r'content_url(.*?)source_url', html)
+
+            for i in range(len(paper_titles_raw)):
+                paper_title = replace_html(str(paper_titles_raw[i]))
+                paper_url_raw = replace_html(str(paper_urls_raw[i]))
+                paper.append(paper_title)
+                if paper != '':
+                    change = True
+
+                ############文章链接、题目
+                paper_url = "http://mp.weixin.qq.com" + paper_url_raw
+                print('paper_url=' + paper_url)
+                print('paper_title=' + paper_title)
+                ##############文章内容、日期、原文链接
                 try:
-                    r = requests.get(wechat_search_url, headers=self.headers, cookies=self.cookies)
-                except ConnectionError:
-                    pass
-                sleep(4)
-                # print(r.content)
-                soup = BeautifulSoup(r.content.decode('utf-8', 'ignore'), "html.parser")
+                    content_raw = requests.get(url=paper_url, headers=paper_content_headers,
+                                               cookies=paper_content_cookies, timeout=2)
+
+                except requests.exceptions.ConnectionError:
+                    r.status_code = "Connection refused"
+                sleep(5)
+                soup_paper_raw = BeautifulSoup(content_raw.content.decode('utf-8', 'ignore'), "html.parser")
                 # print(soup)
-                for items in soup.findAll('div', {'class': 'wx-rb'}):
-                    gzh_paper_url = items.get('href')
-                    name = items.find('h3').text
+                date_item = soup_paper_raw.select('#post-date')
+                if len(date_item) != 0:
+                    date = date_item[0].text
+                    print('date=' + date)
+                else:
+                    date = ''
 
-                    # try:
-                    gzh = add_info(gzh_name=name)
-                    print('add info ok')
-                    # except:
-                    #     print('add info error')
+                content_item = soup_paper_raw.select('#img-content #js_content')
+                if len(content_item) != 0:
+                    content = content_item[0].text
+                else:
+                    content = ''
 
-                    ########################################公众号文章名字和url抓取
-                    paper_content_headers = {
-                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                        'Accept-Encoding': 'gzip, deflate',
-                        'Accept-Language': 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3',
-                        'Connection': 'keep-alive',
-                        # 'Upgrade-Insecure-Requests' : '1',
-                        'Host': 'mp.weixin.qq.com',
-                        'Referer': 'http://mp.weixin.qq.com/profile?src=3&timestamp=1469719174&ver=1&signature=cVUmDPWKg3xdcidBjO*ahZUwZYxCl8DbLLg*ZHN6GjNQm8Lydd8LKUzKHqZmJ3*e3K*f8i2odPMFb*njwN2t*g==',
-                        # 'Referer' : 'http://weixin.sogou.com/weixin?type=1&query=%E9%92%93%E9%B1%BC',
-                        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36',
-                        # 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:47.0) Gecko/20100101 Firefox/47.0'
-                    }
-                    paper_content_cookies = {
-                        'pgv_pvi': '9305632768',
-                        'pgv_si': 's4923546624'
-                    }
+                paper_html = content_raw.content.decode('utf-8', 'ignore')
 
-                    def replace_html(s):
-                        s = s.replace('&quot;:', '')
-                        s = s.replace('&quot;,', '')
-                        s = s.replace('&quot;', '')
-                        s = s.replace('&amp;', '&')
-                        s = s.replace('amp;', '')
-                        s = s.replace('&lt;', '<')
-                        s = s.replace('&gt;', '>')
-                        s = s.replace('&nbsp;', ' ')
-                        s = s.replace(r"\\", r'')
-                        return s
+                source_url_raw = re.findall(r'msg_source_url = \'(.*?)\';', paper_html)
+                if len(source_url_raw) != 0:
+                    source_url = replace_html(str(source_url_raw[0]))
+                    print('source_url=' + source_url)
+                else:
+                    source_url = ''
 
-                    paper = []
-
-                    paper_headers = {
-                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                        'Accept-Encoding': 'gzip, deflate, sdch',
-                        'Accept-Language': 'zh-CN,zh;q=0.8',
-                        'Connection': 'keep-alive',
-                        # 'Upgrade-Insecure-Requests' : '1',
-                        'Host': 'mp.weixin.qq.com',
-                        'Referer': 'http://weixin.sogou.com/weixin?type=1&query=%E9%92%93%E9%B1%BC&ie=utf8&_sug_=y&_sug_type_=',
-                        # 'Referer' : 'http://weixin.sogou.com/weixin?type=1&query=%E9%92%93%E9%B1%BC',
-                        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36',
-                        # 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:47.0) Gecko/20100101 Firefox/47.0'
-                    }
-
-                    try:
-                        r = requests.get(url=gzh_paper_url, headers=paper_headers)
-                    except:
-                        print('解析paper_url 错误')
-                    sleep(5)
-                    html = r.content.decode('utf-8', 'ignore')
-                    # print(r.content.decode('utf-8', 'ignore'))
-                    # print(type(html))
-
-                    paper_titles_raw = re.findall(r'title(.*?)digest', html)
-                    paper_urls_raw = re.findall(r'content_url(.*?)source_url', html)
-                    # print(type(paper_titles_raw))
-                    # print(len(paper_url))
-                    for i in range(len(paper_titles_raw)):
-                        paper_title = replace_html(str(paper_titles_raw[i]))
-                        paper_url_raw = replace_html(str(paper_urls_raw[i]))
-                        paper.append(paper_title)
-                        if paper != '':
-                            change = True
-
-                        ############文章链接、题目
-                        paper_url = "http://mp.weixin.qq.com" + paper_url_raw
-                        print('paper_url=' + paper_url)
-                        print('paper_title=' + paper_title)
-                        ##############文章内容、日期、原文链接
-                        try:
-                            content_raw = requests.get(url=paper_url, headers=paper_content_headers,
-                                                       cookies=paper_content_cookies)
-
-                        except requests.exceptions.ConnectionError:
-                            r.status_code = "Connection refused"
-                        sleep(5)
-                        soup_paper_raw = BeautifulSoup(content_raw.content.decode('utf-8', 'ignore'), "html.parser")
-                        # print(soup)
-                        date_item = soup_paper_raw.select('#post-date')
-                        if len(date_item) != 0:
-                            date = date_item[0].text
-                            print('date=' + date)
-                        else:
-                            date = ''
-
-                        content_item = soup_paper_raw.select('#img-content #js_content')
-                        if len(content_item) != 0:
-                            content = content_item[0].text
-                        else:
-                            content = ''
-
-                        paper_html = content_raw.content.decode('utf-8', 'ignore')
-
-                        source_url_raw = re.findall(r'msg_source_url = \'(.*?)\';', paper_html)
-                        if len(source_url_raw) != 0:
-                            source_url = replace_html(str(source_url_raw[0]))
-                            print('source_url=' + source_url)
-                        else:
-                            source_url = ''
-
-                        try:
-                            iframe = soup_paper_raw.iframe
-                            video_url_raw = iframe.get('data-src')
-                            video_url = replace_html(str(video_url_raw))
-                            print('video_url=' + video_url)
-                        except:
-                            video_url = ''
-
-                        try:
-                            add_paper(name=gzh, title=paper_title, content=content, date=date, source_url=source_url,
-                                      video_url=video_url, change=change)
-                            print('add article')
-                        except:
-                            print('add paper error')
+                try:
+                    iframe = soup_paper_raw.iframe
+                    video_url_raw = iframe.get('data-src')
+                    video_url = replace_html(str(video_url_raw))
+                    print('video_url=' + video_url)
+                except:
+                    video_url = ''
+                print('before')
+                try:
+                    add_paper(name=gzh, title=paper_title, content=content, date=date, source_url=source_url,
+                              video_url=video_url, change=change)
+                    print('add article')
+                except:
+                    print('add paper error')
 
                             ##########################################
 
@@ -195,8 +184,6 @@ def add_info(gzh_name='', id='', pic='', qr_code='', wxrz='', info=''):
     g_i = GZH.objects.get_or_create(name=gzh_name)[0]
     print(g_i)
     print('ok')
-    # g_i.weixin_id = id
-
     g_i.save()
     return g_i
 
@@ -213,7 +200,6 @@ def add_paper(name, title, content, date, source_url, video_url, change):
     paper_list.save()
 
     return paper_list
-
 
 
 def main():

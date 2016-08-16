@@ -21,22 +21,7 @@ class Wechat_gzh():
         self.host = 'http://weixin.sogou.com/weixin?type=1&query='
         self.gzh_info = []
         self.cookies = {
-            'ABTEST': '0|1469412044|v1',
-            'SNUID': '893EA94B9294AAFDB77B7FDE926A6AAB',
-            'IPLOC': 'CN3700',
-            'SUID': '18AC3BDA433E900A00000000579572CC',
-            'JSESSIONID': 'aaadvUENQmZQYe-rf6Pxv',
-            'SUV': '1469412047751761',
-            'weixinIndexVisited': '1',
-            'sct': '4',
-            'ppinf': '5|1469501867|1470711467|dHJ1c3Q6MToxfGNsaWVudGlkOjQ6MjAxN3x1bmlxbmFtZToxMTppJUUyJTgwJTg2b3xjcnQ6MTA6MTQ2OTUwMTg2N3xyZWZuaWNrOjExOmklRTIlODAlODZvfHVzZXJpZDo0NDo4M0JEMzQ5QUE4QUE5MTlBMzFENjUyMUM1Q0IyRDAxRkBxcS5zb2h1LmNvbXw',
-            'pprdig': 'lM6Ym9QoLOesylGeaS5w8B7nz2XyVdAEmLf4mTg7EAY61vjFJQi3f_E20yG4UsK0Ifx2yXNE7rjK1wbkQQI9G0LW4d_Q8MKmg0B1KODSLkzJw2_0UQRpIhz0YTBQs6pkBbdVOhOsRAX7VimSh5TXRL8krfsXkysfhg7FzqvOFfQ',
-            'ppmdig': '14695018670000008f623b041a9ba269ad4843f719b36d3c',
-            'PHPSESSID': '8g0c1nf9v59uluglmgc4dmnk25',
-            'SUIR': '893EA94B9294AAFDB77B7FDE926A6AAB',
-            'sucessCount': '1|Tue, 26 Jul 2016 03:48:00 GMT',
-            'LSTMV': '513 % 2C137',
-            'LCLKINT': '33357'
+
         }
         self.headers = {
             'Accept': 'text/javascript, application/javascript, application/ecmascript, application/x-ecmascript, */*; q=0.01',
@@ -57,7 +42,7 @@ class Wechat_gzh():
                 print(wechat_search_url)
                 # print('page='+str(i))
                 try:
-                    r = requests.get(wechat_search_url, headers=self.headers, cookies=self.cookies)
+                    r = requests.get(wechat_search_url, headers=self.headers)
                 except:
                     pass
                 sleep(5)

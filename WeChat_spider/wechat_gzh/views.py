@@ -4,7 +4,7 @@ import time
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render_to_response, HttpResponse
 from django.template import RequestContext
-
+from django.http import HttpResponseRedirect
 from spider.spider_add_gzh import Wechat_gzh
 from spider.spider_for_fuzzy_search import Wechat_gzh_fuzzy_search
 from wechat_gzh.models import GZH, Article
@@ -171,3 +171,13 @@ def fuzzy_search_spider(request):
 
     return index(request)
 
+
+def cookies_changed(request):
+    if request.method=='POST':
+        cookies = request.POST.get('cookies')
+        print(cookies)
+        f = open('cookies.txt', 'w')
+        f.write(cookies)
+        f.close
+        return index(request)
+    return render_to_response('cookies_change.html', {})

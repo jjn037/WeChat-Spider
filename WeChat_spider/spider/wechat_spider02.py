@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from time import sleep
 import os
 from django.conf import settings
+import http.cookiejar, urllib
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'WeChat_spider.settings')
 
@@ -20,24 +21,19 @@ class Wechat_gzh():
         self.kws = key_words
         self.host = 'http://weixin.sogou.com/weixin?type=1&query='
         self.gzh_info = []
-        self.cookies = {
-            'ABTEST': '0|1469412044|v1',
-            'SNUID': '893EA94B9294AAFDB77B7FDE926A6AAB',
-            'IPLOC': 'CN3700',
-            'SUID': '18AC3BDA433E900A00000000579572CC',
-            'JSESSIONID': 'aaadvUENQmZQYe-rf6Pxv',
-            'SUV': '1469412047751761',
-            'weixinIndexVisited': '1',
-            'sct': '4',
-            'ppinf': '5|1469501867|1470711467|dHJ1c3Q6MToxfGNsaWVudGlkOjQ6MjAxN3x1bmlxbmFtZToxMTppJUUyJTgwJTg2b3xjcnQ6MTA6MTQ2OTUwMTg2N3xyZWZuaWNrOjExOmklRTIlODAlODZvfHVzZXJpZDo0NDo4M0JEMzQ5QUE4QUE5MTlBMzFENjUyMUM1Q0IyRDAxRkBxcS5zb2h1LmNvbXw',
-            'pprdig': 'lM6Ym9QoLOesylGeaS5w8B7nz2XyVdAEmLf4mTg7EAY61vjFJQi3f_E20yG4UsK0Ifx2yXNE7rjK1wbkQQI9G0LW4d_Q8MKmg0B1KODSLkzJw2_0UQRpIhz0YTBQs6pkBbdVOhOsRAX7VimSh5TXRL8krfsXkysfhg7FzqvOFfQ',
-            'ppmdig': '14695018670000008f623b041a9ba269ad4843f719b36d3c',
-            'PHPSESSID': '8g0c1nf9v59uluglmgc4dmnk25',
-            'SUIR': '893EA94B9294AAFDB77B7FDE926A6AAB',
-            'sucessCount': '1|Tue, 26 Jul 2016 03:48:00 GMT',
-            'LSTMV': '513 % 2C137',
-            'LCLKINT': '33357'
-        }
+        # self.cookies = {
+        #     'ABTEST': '7|1471075813|v1',
+        #     'SNUID': '58ED7B9A414578AFC8E3405E41DC4A58',
+        #     'IPLOC': 'CN3700',
+        #     'SUID': '18AC3BDA6A20900A0000000057AED5E5',
+        #     'JSESSIONID': 'aaa8-oF-pfer8gRqhiQxv',
+        #     'SUV': '00395A07DA3BAC1857AED5E534BB9700',
+        #     'weixinIndexVisited': '1',
+        #     'sct': '5',
+        #     'jrtt_at': 'b6fe2bd0a9337f6ea9420fd12187f960',
+        #
+        # }
+        self.cookies = {}
         self.headers = {
             'Accept': 'text/javascript, application/javascript, application/ecmascript, application/x-ecmascript, */*; q=0.01',
             'Accept-Encoding': 'gzip, deflate',
@@ -49,6 +45,13 @@ class Wechat_gzh():
         }
 
     def gzh_info_list(self):
+        with open('../cookies.txt') as f:
+            cookies_raw = f.read()
+            _cookies_raw = cookies_raw.replace('\r', '').replace('\n', '').split(';')
+
+            for _cookies in _cookies_raw:
+                coolies = _cookies.split('=')
+                self.cookies[coolies[0]] = coolies[1]
 
         for key_word in self.kws:
             for i in range(1, 15):  # 此处调试完修改
@@ -57,12 +60,18 @@ class Wechat_gzh():
                 # wechat_search_url = self.host + '钓鱼' + '&page=' + str(i)
                 print(wechat_search_url)
                 print('page='+str(i))
-                try:
-                    r = requests.get(wechat_search_url, headers=self.headers, cookies=self.cookies, timeout=1)
-                except:
-                    print('get wechat_search_url error')
+                if i < 10:
+                    try:
+                        r = requests.get(wechat_search_url, headers=self.headers, timeout=1)
+                    except:
+                        print('get wechat_search_url error')
+                else:
+
+                    r = requests.get(wechat_search_url, headers=self.headers, cookies=self.cookies)
+                    print(r)
+                    # print(r.content.decode('utf-8', 'ignore'))
                 sleep(5)
-                # print(r.content)
+                # print(r.r.content.decode('utf-8', 'ignore'))
                 soup = BeautifulSoup(r.content.decode('utf-8', 'ignore'), "html.parser")
                 # print(soup)
                 for items in soup.findAll('div', {'class': 'wx-rb'}):
@@ -72,7 +81,7 @@ class Wechat_gzh():
                     print('name='+name)
                     wx_id = items.find('label').text
                     print('account='+wx_id)
-                    # print(wx_id)
+                    print(wx_id)
                     fun_infos = items.select('.sp-txt')
                     fun_info = fun_infos[0].text
                     print('introduction='+fun_info)
@@ -82,7 +91,7 @@ class Wechat_gzh():
                     except IndexError:
                         pass
                     gzh_paper_url = items.get('href')
-                    # print(gzh_paper_url)
+                    print(gzh_paper_url)
                     gzh_head_pics = items.find_all("img")  # 公众号头像
 
                     gzh_head_pic = gzh_head_pics[0].get('src')
@@ -92,7 +101,10 @@ class Wechat_gzh():
                     os.getcwd()
                     f_name = wx_id + '.png'
                     # 保存文件时候注意类型要匹配，如要保存的图片为jpg，则打开的文件的名称必须是jpg格式，否则会产生无效图片
-                    conn = urllib.request.urlopen(gzh_head_pic)
+                    try:
+                      conn = urllib.request.urlopen(gzh_head_pic)
+                    except:
+                        pass
                     f = open(f_name, 'wb')
                     f.write(conn.read())
                     f.close()
@@ -154,6 +166,7 @@ class Wechat_gzh():
 
                     try:
                         r = requests.get(url=gzh_paper_url, headers=paper_headers)
+                        print(r)
                     except:
                         pass
                     sleep(5)
@@ -188,13 +201,13 @@ class Wechat_gzh():
                             date = date_item[0].text
                             print('date='+date)
                         else:
-                            date = []
+                            date = ''
 
                         content_item = soup_paper_raw.select('#img-content #js_content')
                         if len(content_item) != 0:
                             content = content_item[0].text
                         else:
-                            content = []
+                            content = ''
                         # print(content)
                         #
                         # content_img_url = soup_paper_raw.find_all('#img-content #js_content img')
