@@ -3,7 +3,7 @@
 import requests, re, urllib.request
 from bs4 import BeautifulSoup
 from time import sleep
-import os
+import os, random, sys
 from django.conf import settings
 import http.cookiejar, urllib
 
@@ -43,6 +43,12 @@ class Wechat_gzh():
             'Referer': 'http://weixin.sogou.com/weixin?query=%E9%92%93%E9%B1%BC&_sug_type_=&sut=2960&lkt=2,1469418101779,1469418103662&_sug_=y&type=1&sst0=1469418103770&page=1&ie=utf8&w=01019900&dr=1',
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:47.0) Gecko/20100101 Firefox/47.0',
         }
+        self.proxy_list = [
+            # '112.16.11.129:2226',
+            '183.61.236.54:3128',
+            '222.161.209.164:8102',
+
+        ]
 
     def gzh_info_list(self):
         with open('../cookies.txt') as f:
@@ -50,33 +56,40 @@ class Wechat_gzh():
             _cookies_raw = cookies_raw.replace('\r', '').replace('\n', '').split(';')
 
             for _cookies in _cookies_raw:
-                coolies = _cookies.split('=')
+                coolies = _cookies.strip().split('=')
                 self.cookies[coolies[0]] = coolies[1]
+        # print(self.cookies)
 
         for key_word in self.kws:
-            for i in range(1, 15):  # 此处调试完修改
-
+            for i in range(12, 20):  # 此处调试完修改
+                _proxy = random.choice(self.proxy_list)
+                print(_proxy)
+                proxies = {'http': _proxy}
                 wechat_search_url = self.host + key_word + '&page=' + str(i)
                 # wechat_search_url = self.host + '钓鱼' + '&page=' + str(i)
                 print(wechat_search_url)
                 print('page='+str(i))
                 if i < 10:
                     try:
-                        r = requests.get(wechat_search_url, headers=self.headers, timeout=1)
+                        r = requests.get(wechat_search_url, headers=self.headers, timeout=5)
                     except:
+                        info = sys.exc_info()
+                        print(info[0], ":", info[1])
                         print('get wechat_search_url error')
                 else:
-
-                    r = requests.get(wechat_search_url, headers=self.headers, cookies=self.cookies)
-                    print(r)
+                    try:
+                        r = requests.get(wechat_search_url, headers=self.headers, cookies=self.cookies, timeout=5)
+                    except requests.exceptions.Timeout:
+                        info = sys.exc_info()
+                        print(info[0], ":", info[1])
+                        print('Timeout occurred')
                     # print(r.content.decode('utf-8', 'ignore'))
-                sleep(5)
+                sleep(10)
                 # print(r.r.content.decode('utf-8', 'ignore'))
                 soup = BeautifulSoup(r.content.decode('utf-8', 'ignore'), "html.parser")
                 # print(soup)
                 for items in soup.findAll('div', {'class': 'wx-rb'}):
                     # print(items)
-                    # print('llllllll')
                     name = items.find('h3').text
                     print('name='+name)
                     wx_id = items.find('label').text
@@ -110,7 +123,6 @@ class Wechat_gzh():
                     f.close()
                     print('Pic Saved!')
 
-
                     qr_code = gzh_head_pics[2].get('src')
                     print('gzh_head_pic='+gzh_head_pic)
                     print('qr_code='+qr_code)
@@ -118,7 +130,7 @@ class Wechat_gzh():
                     try:
                         gzh = add_info(gzh_name=name, id=wx_id, pic=gzh_head_pic, qr_code=qr_code, wxrz=wxrz, info=fun_info)
                     except:
-                        pass
+                        print('add info error')
 
 
                     ########################################公众号文章名字和url抓取
@@ -138,6 +150,7 @@ class Wechat_gzh():
                         'pgv_pvi': '9305632768',
                         'pgv_si': 's4923546624'
                     }
+
                     def replace_html(s):
                         s = s.replace('&quot;:', '')
                         s = s.replace('&quot;,', '')
@@ -241,7 +254,6 @@ class Wechat_gzh():
                            print('add paper error')
 
 
-
                         ##########################################
 
 def add_info(gzh_name, id, pic, qr_code, wxrz, info):
@@ -273,8 +285,8 @@ def add_paper(name, title, content, date, source_url=[], video_url=[]):
 
 
 def main():
-    key_words = ['钓鱼', '鱼竿', '鱼饵', '钓场', '钓箱', '钓竿', '饵料']
-    # key_words = ['SINA_NBA']
+    # key_words = ['钓鱼', '鱼竿', '鱼饵', '钓场', '钓箱', '钓竿', '饵料']
+    key_words = ['钓竿', '饵料']
     wx = Wechat_gzh(key_words)
     wx.gzh_info_list()
 
