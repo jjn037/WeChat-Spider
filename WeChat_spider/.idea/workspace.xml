@@ -9,11 +9,8 @@
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../vue/vue_dmon.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/spider/spider_running.py" afterPath="$PROJECT_DIR$/spider/spider_running.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/spider/wechat_spider02.py" afterPath="$PROJECT_DIR$/spider/wechat_spider02.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wechat_gzh/models.py" afterPath="$PROJECT_DIR$/wechat_gzh/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wechat_gzh/tests.py" afterPath="$PROJECT_DIR$/wechat_gzh/tests.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wechat_gzh/views.py" afterPath="$PROJECT_DIR$/wechat_gzh/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/base.html" afterPath="$PROJECT_DIR$/templates/base.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/index.html" afterPath="$PROJECT_DIR$/templates/index.html" />
     </list>
     <ignored path="WeChat_Spider.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -59,7 +56,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/wechat_gzh/views.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="268">
@@ -111,6 +108,16 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="wechat_spider02.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/spider/wechat_spider02.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -123,21 +130,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="djangocron" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/djangocron">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="26" selection-start-line="0" selection-start-column="19" selection-end-line="0" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-217">
-              <caret line="20" column="85" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="85" />
+            <state relative-caret-position="315">
+              <caret line="50" column="55" selection-start-line="50" selection-start-column="55" selection-end-line="50" selection-end-column="55" />
               <folding />
             </state>
           </provider>
@@ -206,14 +203,12 @@
         <option value="$PROJECT_DIR$/wechat_gzh/spider_for_fuzzy_search.py" />
         <option value="$PROJECT_DIR$/templates/add_gzh.html" />
         <option value="$PROJECT_DIR$/wechat_gzh/add_gzh.py" />
-        <option value="$PROJECT_DIR$/templates/index.html" />
         <option value="$PROJECT_DIR$/wechat_gzh/forms.py" />
         <option value="$PROJECT_DIR$/WeChat_spider/settings.py" />
         <option value="$PROJECT_DIR$/spider/add_gzh.py" />
         <option value="$PROJECT_DIR$/templates/fuzzy_search.html" />
         <option value="$PROJECT_DIR$/templates/article_list.html" />
         <option value="$PROJECT_DIR$/templates/gzh_update.html" />
-        <option value="$PROJECT_DIR$/templates/base.html" />
         <option value="$PROJECT_DIR$/WeChat_spider/urls.py" />
         <option value="$PROJECT_DIR$/spider/spider_add_gzh.py" />
         <option value="$PROJECT_DIR$/spider/spider_for_fuzzy_search.py" />
@@ -228,6 +223,8 @@
         <option value="$PROJECT_DIR$/spider/wechat_spider02.py" />
         <option value="$PROJECT_DIR$/wechat_gzh/tests.py" />
         <option value="$PROJECT_DIR$/wechat_gzh/views.py" />
+        <option value="$PROJECT_DIR$/templates/base.html" />
+        <option value="$PROJECT_DIR$/templates/index.html" />
       </list>
     </option>
   </component>
@@ -373,7 +370,7 @@
       <recent name="$PROJECT_DIR$/wechat_gzh/management" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.tests">
+  <component name="RunManager" selected="Django server.WeChat_Spider">
     <configuration default="false" name="wechat_spider02" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -867,7 +864,14 @@
       <option name="project" value="LOCAL" />
       <updated>1471425125494</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="修复bug">
+      <created>1471513034313</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1471513034313</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -909,7 +913,7 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32956383" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3219178" sideWeight="0.4951535" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21369863" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3890411" sideWeight="0.49030694" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0" sideWeight="0.49030694" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46164384" sideWeight="0.49676898" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -1181,14 +1185,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="17" column="14" selection-start-line="17" selection-start-column="14" selection-end-line="17" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/cookies_change.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -1272,14 +1268,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-217">
-          <caret line="20" column="85" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="85" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vue_dmon_nest_rounter.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -1321,6 +1309,22 @@
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="50" column="55" selection-start-line="50" selection-start-column="55" selection-end-line="50" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+          <folding />
         </state>
       </provider>
     </entry>
