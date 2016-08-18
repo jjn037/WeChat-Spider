@@ -114,7 +114,7 @@ def gzh_updated(request):
                     _ids.append(article.gzh.weixin_id)
                     gzhs.append(article)
 
-    paginator = Paginator(gzhs, 20)
+    paginator = Paginator(gzhs, 30)
     page = request.GET.get('page')
     try:
         _gzhs = paginator.page(page)
@@ -144,7 +144,7 @@ def articles_updated(request):
     except:
         pass
 
-    paginator = Paginator(_article, 20)
+    paginator = Paginator(_article, 30)
     page = request.GET.get('page')
     try:
         _article_list = paginator.page(page)

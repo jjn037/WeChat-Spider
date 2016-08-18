@@ -57,6 +57,7 @@ class WXGZH():
             for items in soup.findAll('div', {'class': 'wx-rb'}):
                 gzh_paper_url = items.get('href')
                 name = items.find('h3').text
+                print(type(name))
 
                 try:
                     gzh = add_info(gzh_name=name)

@@ -61,10 +61,10 @@ class Wechat_gzh():
         # print(self.cookies)
 
         for key_word in self.kws:
-            for i in range(12, 20):  # 此处调试完修改
-                _proxy = random.choice(self.proxy_list)
-                print(_proxy)
-                proxies = {'http': _proxy}
+            for i in range(1, 20):  # 此处调试完修改
+                # _proxy = random.choice(self.proxy_list)
+                # print(_proxy)
+                # proxies = {'http': _proxy}
                 wechat_search_url = self.host + key_word + '&page=' + str(i)
                 # wechat_search_url = self.host + '钓鱼' + '&page=' + str(i)
                 print(wechat_search_url)
@@ -79,9 +79,8 @@ class Wechat_gzh():
                 else:
                     try:
                         r = requests.get(wechat_search_url, headers=self.headers, cookies=self.cookies, timeout=5)
-                    except requests.exceptions.Timeout:
-                        info = sys.exc_info()
-                        print(info[0], ":", info[1])
+                    except:
+
                         print('Timeout occurred')
                     # print(r.content.decode('utf-8', 'ignore'))
                 sleep(10)
@@ -93,6 +92,8 @@ class Wechat_gzh():
                     name = items.find('h3').text
                     print('name='+name)
                     wx_id = items.find('label').text
+                    if wx_id=='':
+                        wx_id = name
                     print('account='+wx_id)
                     print(wx_id)
                     fun_infos = items.select('.sp-txt')
@@ -270,7 +271,7 @@ def add_info(gzh_name, id, pic, qr_code, wxrz, info):
     return g_i
 
 
-def add_paper(name, title, content, date, source_url=[], video_url=[]):
+def add_paper(name, title, content, date, source_url='', video_url=''):
     paper_list = Article.objects.get_or_create(gzh=name, title=title)[0]
     # paper_list.gzh = name
     paper_list.title = title
@@ -283,10 +284,9 @@ def add_paper(name, title, content, date, source_url=[], video_url=[]):
     return paper_list
 
 
-
 def main():
-    # key_words = ['钓鱼', '鱼竿', '鱼饵', '钓场', '钓箱', '钓竿', '饵料']
-    key_words = ['钓竿', '饵料']
+    key_words = ['钓鱼', '鱼竿', '鱼饵', '钓场', '钓箱', '钓竿', '饵料', '垂钓']
+    # key_words = ['钓竿', '饵料']
     wx = Wechat_gzh(key_words)
     wx.gzh_info_list()
 

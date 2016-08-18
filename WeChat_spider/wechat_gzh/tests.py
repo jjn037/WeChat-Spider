@@ -13,34 +13,15 @@ django.setup()
 from wechat_gzh.models import GZH, Article
 
 
-# article_list = Article.objects.filter(gzh__weixin_id__exact='diao--yu')
-# grouped_articles = {}
-# for article in article_list:
-#     articles = grouped_articles.get(article.publish_date) or []
-#     articles.append(article)
-#     grouped_articles[article.publish_date] = articles
+a = GZH.objects.filter(id=505)[0]
+print(type(a.weixin_id))
+if a.weixin_id == '':
+    print('ok')
 
-# print(grouped_articles)
-with open('../cookies.txt') as f:
-    a = f.read()
-# print(a)
-
-_cookies={}
-aa = a.replace('\r', '').replace('\n', '').split(';')
-# a.close()
-# print(aa)
-# print(len(aa))
-for b in aa:
-    c = b.strip().split('=')
-    # print(c)
-    # print(len(c))
-    #
-    # print(c[0])
-    _cookies[c[0]] = c[1]
-print(_cookies)
+# url = 'http://mp.weixin.qq.com/s?timestamp=1471494102&src=3&ver=1&signature=KpwZRWbcCHlGkeTyqYlK8qHXhRU*JaCtsWz6hohtj*A8iLj0szwTtHlpzmN5iDF*6VhARlsqYxsx7eqna6fvzBsIWK1YTV49LEWrn*zPsFRu0NM92kbE2c1iwzqfTyKLCQsu8wCzCfYlFL5OyKmaXB99r-263-u5493Tr40xaDk='
 #
-# import random
-# while 1:
-#     a = random.randint(1, 10)
-#     print(a)
-#     sleep(a)
+url = 'http://weixin.sogou.com/weixin?type=1&query=钓竿&page=9'
+r = requests.get(url=url)
+print(r)
+soup = BeautifulSoup(r.content.decode('utf-8', 'ignore'), "html.parser")
+print(soup)

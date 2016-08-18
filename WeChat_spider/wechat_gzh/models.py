@@ -5,7 +5,7 @@ from django.template.defaultfilters import slugify
 class GZH(models.Model):
 
     name = models.CharField(max_length=50, unique=True)
-    weixin_id = models.CharField(max_length=50, unique=True)
+    weixin_id = models.CharField(max_length=50)
     head_pic = models.URLField()
     qr_code = models.URLField()
     introduction = models.CharField(max_length=500)
