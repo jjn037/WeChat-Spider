@@ -56,6 +56,31 @@ list = [
 ]
 '''
 
+
+# def gzhs_sorted_by_date(request):
+#     gzhs_grouped = {}
+#     gzhs = GZH.objects.all()
+#     for gzh in gzhs:
+#         articles = Article.objects.filter(gzh__weixin_id__exact=gzh.weixin_id)[0:]
+#         if len(articles)>0:
+#             _gzh = gzhs_grouped.get(articles[0].publish_date) or []
+#             _gzh.append(gzh)
+#             gzhs_grouped[articles[0].publish_date]=_gzh
+#     gzh_sorted = sorted(gzhs_grouped.items(), reverse=True)
+#
+#     paginator = Paginator(gzh_sorted, 10)
+#     page = request.GET.get('page')
+#     try:
+#         article_context = paginator.page(page)
+#     except PageNotAnInteger:
+#         article_context = paginator.page(1)
+#     except EmptyPage:
+#         article_context = paginator.page(paginator.num_page)
+#
+#     return render_to_response('gzhs_sorted_by_date.html', {'date_gzhs': article_context})
+#
+
+
 def article_content(request, id):
     article = Article.objects.filter(id=id)[:1]
     content_dict = {'contents': article}
@@ -73,23 +98,6 @@ def fuzzy_search(request):
         fuzzy_info = wx.gzh_info_list()
 
         return render_to_response('fuzzy_search.html', fuzzy_info)
-
-
-# def today_articles(request, gzh_id):
-#     today_articles_dic = {}
-#     new_article = []
-#     try:
-#         article_list = Article.objects.filter(gzh__weixin_id__exact=gzh_id)[0:]
-#         today = time.strftime('%Y-%m-%d')
-#         for article in article_list:
-#             if article.publish_date == today:
-#                 new_article.append(article_list)
-#                 gzh_updated = article_list.gzh.weixin_id
-#                 # today_articles_dic['gzh_updated']
-#                 today_articles_dic = {'new_articles': new_article}
-#     except:
-#         pass
-#     return render_to_response('today.html', today_articles_dic)
 
 
 def gzh_updated(request):

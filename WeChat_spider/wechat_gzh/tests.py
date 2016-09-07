@@ -13,15 +13,19 @@ django.setup()
 from wechat_gzh.models import GZH, Article
 
 
-a = GZH.objects.filter(id=505)[0]
-print(type(a.weixin_id))
-if a.weixin_id == '':
-    print('ok')
 
-# url = 'http://mp.weixin.qq.com/s?timestamp=1471494102&src=3&ver=1&signature=KpwZRWbcCHlGkeTyqYlK8qHXhRU*JaCtsWz6hohtj*A8iLj0szwTtHlpzmN5iDF*6VhARlsqYxsx7eqna6fvzBsIWK1YTV49LEWrn*zPsFRu0NM92kbE2c1iwzqfTyKLCQsu8wCzCfYlFL5OyKmaXB99r-263-u5493Tr40xaDk='
-#
-url = 'http://weixin.sogou.com/weixin?type=1&query=钓竿&page=9'
-r = requests.get(url=url)
-print(r)
-soup = BeautifulSoup(r.content.decode('utf-8', 'ignore'), "html.parser")
-print(soup)
+grouped_articles = {}
+gzhs = GZH.objects.all()
+for gzh in gzhs:
+    article_list = Article.objects.filter(gzh__weixin_id__exact=gzh.weixin_id)[0:]
+    if len(article_list)>0:
+
+        articles = grouped_articles.get(article_list[0].publish_date) or []
+        articles.append(gzh.name)
+        grouped_articles[article_list[0].publish_date] = articles
+sorted_articles = sorted(grouped_articles.items(), reverse=True)
+for k, v in sorted_articles:
+    print(k)
+    print(v)
+
+

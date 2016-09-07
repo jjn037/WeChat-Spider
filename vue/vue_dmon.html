@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="http://cdn.jsdelivr.net/vue/1.0.7/vue.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <my-component></my-component>
+</div>
+
+<script>
+    var MyComponent = Vue.extend({
+        template: '<div>Hello</div>'
+    })
+
+    Vue.component('my-component', MyComponent)
+    new Vue({
+        el: '#app'
+    })
+</script>
+</body>
+</html>
